@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCFrame", "CCFrame\CCFrame.csproj", "{93B1151C-9461-4A6A-B799-4B1649BC232A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameDemo", "FrameDemo\FrameDemo.csproj", "{F370BDB8-543D-4F87-BBE0-47E084F1D3AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameTestDemo", "FrameTestDemo\FrameTestDemo.csproj", "{3EF615EE-34FD-42D2-85A5-23485CA79107}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{93B1151C-9461-4A6A-B799-4B1649BC232A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93B1151C-9461-4A6A-B799-4B1649BC232A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93B1151C-9461-4A6A-B799-4B1649BC232A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93B1151C-9461-4A6A-B799-4B1649BC232A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F370BDB8-543D-4F87-BBE0-47E084F1D3AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F370BDB8-543D-4F87-BBE0-47E084F1D3AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F370BDB8-543D-4F87-BBE0-47E084F1D3AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F370BDB8-543D-4F87-BBE0-47E084F1D3AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EF615EE-34FD-42D2-85A5-23485CA79107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF615EE-34FD-42D2-85A5-23485CA79107}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EF615EE-34FD-42D2-85A5-23485CA79107}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EF615EE-34FD-42D2-85A5-23485CA79107}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C4AF810F-9140-4F80-9CF7-9CE1CAC765EF}
+	EndGlobalSection
+EndGlobal
