@@ -6,7 +6,19 @@
 
   <ItemGroup>
     <Folder Include="Alarm\" />
-    <Folder Include="DataConvert\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="AxInterop.ActUtlTypeLib">
+      <HintPath>Driver\Mitsubish\AxInterop.ActUtlTypeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.ActUtlTypeLib">
+      <HintPath>Driver\Mitsubish\Interop.ActUtlTypeLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

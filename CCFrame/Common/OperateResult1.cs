@@ -105,6 +105,11 @@ namespace CCFrame
         public OperateResult<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult7, TResult8, TResult9> Then<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult7, TResult8, TResult9>(Func<T, OperateResult<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult7, TResult8, TResult9>> func) =>
             (base.IsSuccess ? func(this.Content) : OperateResult.CreateFailedResult<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult7, TResult8, TResult9>(this));
 
+        internal OperateResult<T1> Convert<T1>()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
 
