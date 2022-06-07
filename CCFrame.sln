@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrameDemo", "FrameDemo\Fram
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrameTestDemo", "FrameTestDemo\FrameTestDemo.csproj", "{3EF615EE-34FD-42D2-85A5-23485CA79107}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeCollect", "CodeCollect\CodeCollect.csproj", "{73F37DD6-2755-4D83-999D-F99721523605}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeCollect", "CodeCollect\CodeCollect.csproj", "{73F37DD6-2755-4D83-999D-F99721523605}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCFrame.UIForm", "CCFrame.UIForm\CCFrame.UIForm.csproj", "{DF3FD6A1-D8F4-4B8B-A4B6-52CFDC0A7066}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{73F37DD6-2755-4D83-999D-F99721523605}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73F37DD6-2755-4D83-999D-F99721523605}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73F37DD6-2755-4D83-999D-F99721523605}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF3FD6A1-D8F4-4B8B-A4B6-52CFDC0A7066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF3FD6A1-D8F4-4B8B-A4B6-52CFDC0A7066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF3FD6A1-D8F4-4B8B-A4B6-52CFDC0A7066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF3FD6A1-D8F4-4B8B-A4B6-52CFDC0A7066}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
