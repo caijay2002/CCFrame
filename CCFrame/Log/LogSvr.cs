@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -166,6 +167,22 @@ namespace CCFrame.Log
         public static void WriteLine(string message)
         {
             System.Diagnostics.Debug.WriteLine(message);
+        }
+
+        /// <summary>
+        /// 显示行号，路径，方法名
+        /// </summary>
+        /// <param name="line">行号</param>
+        /// <param name="path">路径</param>
+        /// <param name="name">方法名</param>
+        public static void Log([CallerLineNumber] int line = -1,
+        [CallerFilePath] string path = null,
+        [CallerMemberName] string name = null)
+        {
+            Console.WriteLine((line < 0) ? "No line" : "Line " + line);
+            Console.WriteLine((path == null) ? "No file path" : path);
+            Console.WriteLine((name == null) ? "No member name" : name);
+            Console.WriteLine();
         }
 
     }

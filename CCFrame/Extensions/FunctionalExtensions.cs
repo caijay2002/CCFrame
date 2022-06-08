@@ -37,8 +37,22 @@ namespace CCFrame.Extensions
             }
         }
 
-        public static Func<T1, TResult> Compose<T1, T2, TResult>(Func<T1, T2> f1, 
-            Func<T2, TResult> f2) =>
+        //Func<int, int> f1 = x => x + 1;
+        //Func<int, int> f2 = x => x + 2;
+        //Func<int, int> f3 = Compose(f1, f2);
+        //var x1 = f3(39); 返回值42
+        /// <summary>
+        /// 高阶函数以函数作为参数返回一个函数或者返回2个函数
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="f1">可以有两个不同的类型</param>
+        /// <param name="f2"></param>
+        /// <returns></returns>
+        public static Func<T1, TResult> Compose<T1, T2, TResult>(
+            Func<T1, T2> f1, //可以有两个不同的类型，一个输入T1，另一个输出T2
+            Func<T2, TResult> f2) =>//输入T2与f1的输出类型相同
             a => f2(f1(a));
     }
 }
