@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-#region << 文 件 说 明 >>
+#region << 以太网通信帮助类 >>
 /*----------------------------------------------------------------
 // 文件名称：EthernetHelper
 // 创 建 者：蔡程健
