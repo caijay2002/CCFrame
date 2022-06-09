@@ -44,7 +44,8 @@ namespace CCFrame.Command
         public CommandObject GetCommandObject()
         {
             var result = _commandObjectQueue.TryDequeue(out CommandObject command);
-            return command;
+            if (result) return command;
+            else return null;
         }
 
         /// <summary>

@@ -40,7 +40,7 @@ namespace CCFrame.Core
         /// <param name="key"></param>
         /// <param name="address"></param>
         /// <param name="value"></param>
-        public static void UpdateCache(string key, string address,object value)
+        public static void UpdateCache(string key, string address, object value)
         {
             if (DataMap.ContainsKey(key))
             {
@@ -74,7 +74,7 @@ namespace CCFrame.Core
             if (DataMap.ContainsKey(key))
             {
                 var oldData = DataMap[key].FirstOrDefault(x => x.Address == data.Address);
-                if(oldData ==null || oldData.Value == data.Value)
+                if (oldData == null || oldData.Value == data.Value)
                 {
                     return;
                 }
@@ -87,7 +87,7 @@ namespace CCFrame.Core
                 if (DataChanged != null) DataChanged(key, data);
 
                 DataMap.TryAdd(key, new List<IData>() { data });
-            }            
+            }
         }
 
         /// <summary>
@@ -95,10 +95,7 @@ namespace CCFrame.Core
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static List<IData> GetDataList(string key)
-        {
-            return DataMap[key];
-        }
+        public static List<IData> GetDataList(string key) => DataMap[key] ?? null;
 
         /// <summary>
         /// 获取值
@@ -106,19 +103,14 @@ namespace CCFrame.Core
         /// <param name="key"></param>
         /// <param name="address"></param>
         /// <returns></returns>
-        public static object GetValue(string key, string address)
-        {
-            return DataMap[key]?.FirstOrDefault(x => x.Address == address)?.Value ?? null;
-        }
+        public static object GetValue(string key, string address) => DataMap[key]?.FirstOrDefault(x => x.Address == address)?.Value ?? null;
+
         /// <summary>
         /// 获取数据
         /// </summary>
         /// <param name="key"></param>
         /// <param name="address"></param>
         /// <returns></returns>
-        public static IData GetData(string key, string address)
-        {
-            return DataMap[key]?.FirstOrDefault(x => x.Address == address) ?? null;
-        }
+        public static IData GetData(string key, string address) => DataMap[key]?.FirstOrDefault(x => x.Address == address) ?? null;
     }
 }

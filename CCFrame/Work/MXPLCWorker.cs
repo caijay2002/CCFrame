@@ -54,10 +54,7 @@ namespace CCFrame.Work
             MXDriver.Initialize(m_IpAddress, m_stationNumber);
         }
 
-        public void InitData(string key, List<IData> datas)
-        {
-            MonitorMap.Add(key, datas);
-        }
+        public void InitData(string key, List<IData> datas) => MonitorMap.Add(key, datas);
 
         public void Start()
         {
@@ -67,10 +64,7 @@ namespace CCFrame.Work
             });
         }
 
-        public void Stop()
-        {
-            IsStop = true;
-        }
+        public void Stop() => IsStop = true;
 
         public OperateResult ReadData(ref IData data)
         {
@@ -88,10 +82,7 @@ namespace CCFrame.Work
             }
         }
 
-        public OperateResult WritePlcData(IData data)
-        {
-            return OperateResult.CreateSuccessResult();
-        }
+        public OperateResult WritePlcData(IData data) => OperateResult.CreateSuccessResult();
 
         private async void Run()
         {
