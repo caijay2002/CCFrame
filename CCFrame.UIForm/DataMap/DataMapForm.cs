@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CCFrame.Core;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,7 +20,7 @@ namespace CCFrame.UIForm.DataMap
 
         private async void ReflashData()
         {
-            //dataGridView1.DataSource = await Task.Run(() => DataCacheSvr.GetDataList("DataMap"));
+            dataGridView1.DataSource = await Task.Run(() => DataCacheSvr.GetDataList("DataMap"));
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -67,9 +68,10 @@ namespace CCFrame.UIForm.DataMap
             ReflashData();
         }
 
-        private async void Btn_Reflash_Click(object sender, EventArgs e)
+        private void Btn_Reflash_Click(object sender, EventArgs e)
         {
             //dataGridView1.DataSource = await Task.Run(() => DataCacheSvr.GetDataList("DataMap"));
+            ReflashData();
         }
     }
 }

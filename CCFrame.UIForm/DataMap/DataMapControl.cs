@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CCFrame.Core;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,8 @@ namespace CCFrame.UIForm.DataMap
 {
     public partial class DataMapControl : UserControl
     {
+        public EventHandler ClickHandler;
+
         public Size DataMapSize { get { return dataMap_View.Size; } set { dataMap_View.Size = value; } }
 
         public DataMapControl()
@@ -23,9 +26,9 @@ namespace CCFrame.UIForm.DataMap
         /// 刷新数据
         /// </summary>
         /// <param name="datas"></param>
-        public async void ReflashData(List<CCFrame.Command.Data.IData> datas)
+        public void ReflashData(List<CCFrame.Command.Data.IData> datas)
         {
-            dataMap_View.DataSource = await Task.Run(() => datas);
+            dataMap_View.DataSource = datas;
         }
 
         private void dataMap_View_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -61,11 +64,15 @@ namespace CCFrame.UIForm.DataMap
                     }
                 }
 
+                DataCacheSvr.UpdateCache("DataMap", selectedItem.Address, value);
+
+                if (ClickHandler != null) ClickHandler(sender, e);
+
                 //DataCacheSvr.UpdateCache("DataMap", selectedItem.Address, value);
 
                 //ReflashData();
 
-                //dataGridView1.Rows[selectedIndex].Selected = true;
+                dataMap_View.Rows[selectedIndex].Selected = true;
             }
             catch (Exception ex)
             {

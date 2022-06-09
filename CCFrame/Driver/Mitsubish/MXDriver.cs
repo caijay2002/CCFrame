@@ -25,7 +25,7 @@ using CCFrame.Command.Data;
 
 namespace CCFrame.Driver
 {
-    public class MXDriver
+    public class MXDriver:IDriver
     {
         private ActUtlType axActUtlType = new ActUtlType();
         private string m_strIpAddress { get; set; }

@@ -53,7 +53,7 @@ namespace CCFrame.Ethernet
             }
             catch (Exception ex)
             {
-                LogSvr.Error(string.Format("PingDevice {0} meet error {0}", ip, ex.Message));
+                LogSvr.Error(string.Format("PingDevice {0} 失败，故障内容 {1}", ip, ex.Message));
                 return OperateResult.CreateFailedResult(new OperateResult()
                 {
                     Message =$"PingDevice Error:{ex.Message}"

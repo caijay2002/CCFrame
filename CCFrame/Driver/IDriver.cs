@@ -20,8 +20,7 @@ using System.Threading.Tasks;
 
 namespace CCFrame.Driver
 {
-    public class IDriver
+    public interface IDriver
     {
-
     }
 }

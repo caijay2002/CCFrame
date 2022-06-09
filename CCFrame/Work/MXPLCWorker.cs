@@ -72,7 +72,7 @@ namespace CCFrame.Work
             IsStop = true;
         }
 
-        public static OperateResult ReadData(ref IData data)
+        public OperateResult ReadData(ref IData data)
         {
             if(data is MXPlcData plcData)
             {
@@ -88,9 +88,9 @@ namespace CCFrame.Work
             }
         }
 
-        public static bool WritePlcData(IData data)
+        public OperateResult WritePlcData(IData data)
         {
-            return true;
+            return OperateResult.CreateSuccessResult();
         }
 
         private async void Run()
