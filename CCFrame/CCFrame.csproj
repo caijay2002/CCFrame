@@ -21,6 +21,18 @@
     <Reference Include="Interop.ActUtlTypeLib">
       <HintPath>Driver\Mitsubish\Interop.ActUtlTypeLib.dll</HintPath>
     </Reference>
+    <Reference Include="Opc.Ua.Client">
+      <HintPath>Driver\OPC\Opc.Ua.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.Configuration">
+      <HintPath>Driver\OPC\Opc.Ua.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.Core">
+      <HintPath>Driver\OPC\Opc.Ua.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.Gds.Client.Common">
+      <HintPath>Driver\OPC\Opc.Ua.Gds.Client.Common.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

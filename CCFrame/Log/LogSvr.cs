@@ -25,7 +25,7 @@ namespace CCFrame.Log
 {
     public static class LogSvr
     {
-        private static NLog.Logger logger;
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private static ConcurrentQueue<CCLog> cCLogs = new ConcurrentQueue<CCLog>();
 
@@ -50,48 +50,41 @@ namespace CCFrame.Log
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        private static string PassMessage(string message)
+        private static bool PassMessage(string message)
         {
             try
             {
-                if(logger == null) logger = NLog.LogManager.GetCurrentClassLogger();
-                if (currentLogs.Count < 1) return "";
-                //数据过滤
-                if (currentLogs.Contains(message))//如果最近10条数据中有包含当前数据则不再添加数据了
-                {
-                    return null;
-                }
+                //if (currentLogs.Count < 1) return "";
+                //数据过滤 //如果最近10条数据中有包含当前数据则不再添加数据了
+                if (currentLogs.Contains(message)) return true;
 
                 currentLogs.Enqueue(message);
 
-                CCLog cLog;
                 if (currentLogs.Count > FilterLogCount)//大于10条移除最旧的数据
                 {
-                    cCLogs.TryDequeue(out cLog);
+                    currentLogs.TryDequeue(out string cLog);
                 }
             }
             catch (Exception ex)
             {
 
-                return ex.Message;
+                return false;
             }
 
 
-            return message;
+            return false;
         }
 
         public static void Error(string message)
         {
             try
             {
-                message = PassMessage(message);
-                if (message == null) return;
-
+                logger.Error(message);
+                if (PassMessage(message)) return;//需要数据过滤
                 CCLog log = new CCLog();
                 log.Type = LogType.Error;
                 log.Message = DateTime.Now.ToString("HH:mm:ss fff") + "  " + message;
-                cCLogs.Enqueue(log);
-                logger.Error(message);
+                cCLogs.Enqueue(log);                
             }
             catch (Exception ex)
             {
@@ -102,26 +95,23 @@ namespace CCFrame.Log
 
         public static void Debug(string message)
         {
-            message = PassMessage(message);
-            if (message == null) return;
-
+            logger.Debug(message);
+            if (PassMessage(message)) return;//需要数据过滤
             CCLog log = new CCLog();
             log.Type = LogType.Debug;
             log.Message = DateTime.Now.ToString("HH:mm:ss fff") + "  " + message;
-            cCLogs.Enqueue(log);
-            logger.Debug(message);
+            cCLogs.Enqueue(log);            
         }
 
         public static void Info(string message)
         {
-            message = PassMessage(message);
-            if (message == null) return;
+            logger.Info(message);
+            if (PassMessage(message)) return;//需要数据过滤
 
             CCLog log = new CCLog();
             log.Type = LogType.Info;
             log.Message = DateTime.Now.ToString("HH:mm:ss fff") + "  " + message;
-            cCLogs.Enqueue(log);
-            logger.Info(message);
+            cCLogs.Enqueue(log);            
         }
 
         public static string GetMessage()

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrameTestDemo", "FrameTestD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeCollect", "CodeCollect\CodeCollect.csproj", "{73F37DD6-2755-4D83-999D-F99721523605}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCFrame.UIForm", "CCFrame.UIForm\CCFrame.UIForm.csproj", "{DF3FD6A1-D8F4-4B8B-A4B6-52CFDC0A7066}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CCFrame.UIForm", "CCFrame.UIForm\CCFrame.UIForm.csproj", "{DF3FD6A1-D8F4-4B8B-A4B6-52CFDC0A7066}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

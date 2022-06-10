@@ -100,12 +100,12 @@ namespace CCFrame.Work
                         var connectResult = MXDriver.Connect();
                         if (!connectResult.IsSuccess)
                         {
+                            LogSvr.Error($"连接失败 {connectResult.Message}");
                             await Task.Delay(1000);
                             continue;
                         }
                         else
-                        {
-                            LogSvr.Error($"连接失败 {connectResult.Message}");
+                        {                            
                             IsConnected = true;
                         }
                     }
