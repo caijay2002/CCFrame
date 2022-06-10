@@ -97,13 +97,15 @@ namespace CCFrame.Work
 
                     if (IsConnected == false)//是否连接
                     {
-                        if (!MXDriver.Connect().IsSuccess)
+                        var connectResult = MXDriver.Connect();
+                        if (!connectResult.IsSuccess)
                         {
                             await Task.Delay(1000);
                             continue;
                         }
                         else
                         {
+                            LogSvr.Error($"连接失败 {connectResult.Message}");
                             IsConnected = true;
                         }
                     }

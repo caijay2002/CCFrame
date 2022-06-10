@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-#region << 文 件 说 明 >>
+#region << 日志统一处理 >>
 /*----------------------------------------------------------------
 // 文件名称：LogSvr
 // 创 建 者：蔡程健
@@ -25,7 +25,7 @@ namespace CCFrame.Log
 {
     public static class LogSvr
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static NLog.Logger logger;
 
         private static ConcurrentQueue<CCLog> cCLogs = new ConcurrentQueue<CCLog>();
 
@@ -52,9 +52,10 @@ namespace CCFrame.Log
         /// <returns></returns>
         private static string PassMessage(string message)
         {
-            //if (currentLogs.Count < 1) return "";
             try
             {
+                if(logger == null) logger = NLog.LogManager.GetCurrentClassLogger();
+                if (currentLogs.Count < 1) return "";
                 //数据过滤
                 if (currentLogs.Contains(message))//如果最近10条数据中有包含当前数据则不再添加数据了
                 {
@@ -169,21 +170,21 @@ namespace CCFrame.Log
             System.Diagnostics.Debug.WriteLine(message);
         }
 
-        /// <summary>
-        /// 显示行号，路径，方法名
-        /// </summary>
-        /// <param name="line">行号</param>
-        /// <param name="path">路径</param>
-        /// <param name="name">方法名</param>
-        public static void Log([CallerLineNumber] int line = -1,
-        [CallerFilePath] string path = null,
-        [CallerMemberName] string name = null)
-        {
-            Console.WriteLine((line < 0) ? "No line" : "Line " + line);
-            Console.WriteLine((path == null) ? "No file path" : path);
-            Console.WriteLine((name == null) ? "No member name" : name);
-            Console.WriteLine();
-        }
+        ///// <summary>
+        ///// 显示行号，路径，方法名
+        ///// </summary>
+        ///// <param name="line">行号</param>
+        ///// <param name="path">路径</param>
+        ///// <param name="name">方法名</param>
+        //public static void Log([CallerLineNumber] int line = -1,
+        //[CallerFilePath] string path = null,
+        //[CallerMemberName] string name = null)
+        //{
+        //    Console.WriteLine((line < 0) ? "No line" : "Line " + line);
+        //    Console.WriteLine((path == null) ? "No file path" : path);
+        //    Console.WriteLine((name == null) ? "No member name" : name);
+        //    Console.WriteLine();
+        //}
 
     }
 
