@@ -31,7 +31,10 @@ namespace CCFrame.Log
 {
     public class TraceHelper
     {
-        //将线程和任务信息写入控制台
+        /// <summary>
+        /// 将线程和任务信息写入控制台
+        /// </summary>
+        /// <param name="info"></param>
         public static void TraceThreadAndTask(string info)
         {
             string taskInfo = Task.CurrentId == null ? "no task" : "task " + Task.CurrentId;
