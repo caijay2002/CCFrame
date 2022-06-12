@@ -6,7 +6,12 @@ namespace CodeCollect
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            //Console.WriteLine("Hello World!");
+            AsyncDemo demo = new AsyncDemo();
+            //VersionManage.WriteAttributeInfo()
+            VersionManage.DisplayTypeInfo(demo.GetType());
+
+            Console.ReadLine();
         }
     }
 }

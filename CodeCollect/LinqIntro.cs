@@ -30,7 +30,7 @@ namespace CodeCollect
 {
     internal class LinqIntro
     {
-        static void Main()
+        static void TestDemo()
         {
             LINQQuery();
             ExtensionMethods();

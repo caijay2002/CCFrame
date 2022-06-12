@@ -8,6 +8,7 @@
     <Folder Include="Alarm\" />
     <Folder Include="Driver\WebAPI\" />
     <Folder Include="Extensions\" />
+    <Folder Include="FileHelper\" />
   </ItemGroup>
 
   <ItemGroup>

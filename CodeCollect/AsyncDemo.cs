@@ -30,6 +30,7 @@ using System.Threading;
 
 namespace CodeCollect
 {
+    [LastModified("19 Jul 2017", "updated for C# 7 and .NET Core 2")]
     internal class AsyncDemo
     {
         private const string url = "http://www.cninnovation.com";

@@ -1,5 +1,6 @@
 ﻿using CCFrame.Command.Data;
 using CCFrame.Driver;
+using CCFrame.Version;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ using System.Threading.Tasks;
 
 namespace CCFrame.Work
 {
+    [LastModified("2022-06-11", "OPCUA驱动工作者")]
     public class OpcUAWorker : IWorker
     {
         public void InitData(string key, List<IData> datas)
