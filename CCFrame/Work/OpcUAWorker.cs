@@ -26,14 +26,25 @@ namespace CCFrame.Work
     [LastModified("2022-06-11", "OPCUA驱动工作者")]
     public class OpcUAWorker : IWorker
     {
-        public void InitData(string key, List<IData> datas)
-        {
+        //private string m_IpAddress { get; set; }
 
-        }
+        private OpcUADriver OpcUADriver = new OpcUADriver();
 
+        /// <summary>
+        /// 监控的数据表
+        /// </summary>
+        private static Dictionary<string, List<IData>> MonitorMap = new Dictionary<string, List<IData>>();
+
+
+        public void InitData(string key, List<IData> datas) => MonitorMap.Add(key, datas);
+
+        /// <summary>
+        /// 初始化配置
+        /// </summary>
+        /// <param name="configItems"></param>
         public void Initialize(List<DriverConfigItem> configItems)
         {
-
+            OpcUADriver.Initialize(configItems);
         }
 
         public OperateResult ReadData(ref IData data)

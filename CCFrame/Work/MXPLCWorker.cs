@@ -38,20 +38,20 @@ namespace CCFrame.Work
 
         public void Initialize(List<DriverConfigItem> configItems)
         {
-            foreach(var item in configItems)
-            {
-                switch (item.Key)
-                {
-                    case "IpAddress":
-                        m_IpAddress = item.Value;
-                        break;
-                    case "StationNumber":
-                        m_stationNumber = Convert.ToInt32(item.Value);
-                        break;
-                }
-            }
+            //foreach(var item in configItems)
+            //{
+            //    switch (item.Key)
+            //    {
+            //        case "IpAddress":
+            //            m_IpAddress = item.Value;
+            //            break;
+            //        case "StationNumber":
+            //            m_stationNumber = Convert.ToInt32(item.Value);
+            //            break;
+            //    }
+            //}
 
-            MXDriver.Initialize(m_IpAddress, m_stationNumber);
+            MXDriver.Initialize(configItems);
         }
 
         public void InitData(string key, List<IData> datas) => MonitorMap.Add(key, datas);

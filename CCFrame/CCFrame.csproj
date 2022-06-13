@@ -37,4 +37,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Driver\OPC\ConsoleReferenceClient.Config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

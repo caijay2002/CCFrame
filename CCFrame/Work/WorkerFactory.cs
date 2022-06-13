@@ -36,6 +36,9 @@ namespace CCFrame.Work
                 case "MXDriver":
                     driver = new MXPLCWorker();
                     break;
+                case "OPCUA":
+                    driver = new OpcUAWorker();
+                    break;
             }
             return driver;
         }

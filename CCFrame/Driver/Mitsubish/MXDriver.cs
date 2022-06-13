@@ -35,11 +35,23 @@ namespace CCFrame.Driver
         public bool IsConnected = false;
         
 
-        public void Initialize(string address, int stationNumber)
+        public void Initialize(List<DriverConfigItem> configItems)
         {
-            m_strIpAddress = address;
+            foreach (var item in configItems)
+            {
+                switch (item.Key)
+                {
+                    case "IpAddress":
+                        m_strIpAddress = item.Value;
+                        break;
+                    case "StationNumber":
+                        m_iLogicalStationNumber = Convert.ToInt32(item.Value);
+                        break;
+                }
+            }
+            //m_strIpAddress = address;
             m_ConnectTimeout = 3000;//3秒钟
-            m_iLogicalStationNumber = stationNumber;
+            //m_iLogicalStationNumber = stationNumber;
         }
 
         /// <summary>

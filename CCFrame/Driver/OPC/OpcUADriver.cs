@@ -21,7 +21,7 @@ using Opc.Ua.Configuration;
 //----------------------------------------------------------------*/
 #endregion
 
-namespace CCFrame.Driver.OPC
+namespace CCFrame.Driver
 {
     public delegate void MonitorDataChanged(string key, string value);
 
@@ -30,11 +30,11 @@ namespace CCFrame.Driver.OPC
         /// <summary>
         /// IP地址
         /// </summary>
-        private string m_strIpAddress { get; set; }
+        private string m_IpAddress { get; set; }
         /// <summary>
         /// 连接超时
         /// </summary>
-        private int m_ConnectTimeout { get; set; }
+        private int m_Port { get; set; }
 
         /// <summary>
         /// 应用配置
@@ -62,7 +62,7 @@ namespace CCFrame.Driver.OPC
         {
             try
             {
-                var result = Ethernet.EthernetHelper.PingDevice(m_strIpAddress, m_ConnectTimeout);
+                var result = Ethernet.EthernetHelper.PingDevice(m_IpAddress, 3000);
                 if (result.IsSuccess)
                 {
                     try
@@ -73,7 +73,7 @@ namespace CCFrame.Driver.OPC
                         }
                         else
                         {
-                            EndpointDescription endpointDescription = CoreClientUtils.SelectEndpoint(m_strIpAddress, false);
+                            EndpointDescription endpointDescription = CoreClientUtils.SelectEndpoint(m_IpAddress, false);
 
                             EndpointConfiguration endpointConfiguration = EndpointConfiguration.Create(m_configuration);
 
@@ -105,12 +105,12 @@ namespace CCFrame.Driver.OPC
                 }
                 else
                 {
-                    return OperateResult.CreateFailedResult(new OperateResult($"Ping {m_strIpAddress} 失败 内容{result.Message}"));
+                    return OperateResult.CreateFailedResult(new OperateResult($"Ping {m_IpAddress} 失败 内容{result.Message}"));
                 }
             }
             catch (Exception ex)
             {
-                return OperateResult.CreateFailedResult(new OperateResult($"[{m_strIpAddress}] QPlcMonitorDriver Connect, Exception:{ex.Message}"));
+                return OperateResult.CreateFailedResult(new OperateResult($"[{m_IpAddress}] QPlcMonitorDriver Connect, Exception:{ex.Message}"));
             }
         }
 
@@ -141,8 +141,22 @@ namespace CCFrame.Driver.OPC
         /// <summary>
         /// 初始化
         /// </summary>
-        public async void Initialize()
+        public async void Initialize(List<DriverConfigItem> configItems)
         {
+
+            foreach (var item in configItems)
+            {
+                switch (item.Key)
+                {
+                    case "IpAddress":
+                        m_IpAddress = item.Value;
+                        break;
+                    case "Port":
+                        m_Port = Convert.ToInt32(item.Value);
+                        break;
+                }
+            }
+
             ApplicationInstance application = new ApplicationInstance();
             application.ApplicationName = "Quickstart Console Reference Client";
             application.ApplicationType = ApplicationType.Client;
