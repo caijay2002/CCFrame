@@ -137,6 +137,7 @@ namespace CCFrame.UIForm.DataMap
             this.Btn_Reflash.TabIndex = 16;
             this.Btn_Reflash.Text = "刷新数值";
             this.Btn_Reflash.UseVisualStyleBackColor = true;
+            this.Btn_Reflash.Click += new System.EventHandler(this.Btn_Reflash_Click);
             // 
             // txt_Value
             // 

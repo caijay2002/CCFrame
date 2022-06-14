@@ -51,7 +51,7 @@ namespace CCFrame.Work
             OpcUADriver.Initialize(configItems);
         }
 
-        public OperateResult ReadData(ref IData data)
+        public OperateResult ReadData(IData data)
         {
             return OperateResult.CreateSuccessResult();
         }
@@ -66,7 +66,7 @@ namespace CCFrame.Work
 
         }
 
-        public OperateResult WritePlcData(IData data)
+        public OperateResult WriteData(IData data)
         {
             return OperateResult.CreateSuccessResult();
         }

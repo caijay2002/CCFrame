@@ -11,24 +11,34 @@ using System.Windows.Forms;
 
 namespace CCFrame.UIForm.DataMap
 {
+    public delegate void ClickHandler(object sender, Command.Data.IData data);
+
     public partial class DataMapControl : UserControl
     {
-        public EventHandler ClickHandler;
+        public ClickHandler ClickHandler;
 
         public Size DataMapSize { get { return dataMap_View.Size; } set { dataMap_View.Size = value; } }
+
+        private string m_SourceKey { get; set; }
 
         public DataMapControl()
         {
             InitializeComponent();
         }
 
+        public void SetSourceKey(string key)
+        {
+            m_SourceKey = key;
+        }
+
         /// <summary>
         /// 刷新数据
         /// </summary>
         /// <param name="datas"></param>
-        public void ReflashData(List<CCFrame.Command.Data.IData> datas)
+        public async void ReflashData()
         {
-            dataMap_View.DataSource = datas;
+            //dataMap_View.DataSource = datas;
+            dataMap_View.DataSource = await Task.Run(() => DataCacheSvr.GetDataList("DataMap"));
         }
 
         private void dataMap_View_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -53,7 +63,9 @@ namespace CCFrame.UIForm.DataMap
 
                 string value = txt_Value.Text;
 
-                if (selectedItem.DataType == CCFrame.Command.Data.DataType.Int32)
+                selectedItem.Value = Value;
+
+                if (selectedItem.DataType == Command.Data.DataType.Int32 || selectedItem.DataType == Command.Data.DataType.Short)
                 {
                     int result = 0;
                     var status = int.TryParse(value, out result);
@@ -62,15 +74,16 @@ namespace CCFrame.UIForm.DataMap
                         CCFrame.Log.LogSvr.Error(selectedItem.Address + "输入的数据类型不正确");
                         return;
                     }
+                    selectedItem.Value = result;
                 }
 
-                DataCacheSvr.UpdateCache("DataMap", selectedItem.Address, value);
+                DataCacheSvr.UpdateCache(m_SourceKey, selectedItem.Address, value);
 
-                if (ClickHandler != null) ClickHandler(sender, e);
+                if (ClickHandler != null) ClickHandler(sender, selectedItem);
 
                 //DataCacheSvr.UpdateCache("DataMap", selectedItem.Address, value);
 
-                //ReflashData();
+                ReflashData();
 
                 dataMap_View.Rows[selectedIndex].Selected = true;
             }
@@ -78,6 +91,13 @@ namespace CCFrame.UIForm.DataMap
             {
                 CCFrame.Log.LogSvr.Error("数据修改错误" + ex.Message);
             }
+        }
+
+        private void Btn_Reflash_Click(object sender, EventArgs e)
+        {
+
+            ReflashData();
+            //if (ClickHandler != null) ClickHandler(sender, e);
         }
     }
 }

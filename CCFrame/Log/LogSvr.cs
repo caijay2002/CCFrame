@@ -67,7 +67,7 @@ namespace CCFrame.Log
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine($"LogSvr PassMessage {ex.Message}");
                 return false;
             }
 
@@ -88,30 +88,46 @@ namespace CCFrame.Log
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine($"LogSvr Error {ex.Message}");
             }
 
         }
 
         public static void Debug(string message)
         {
-            logger.Debug(message);
-            if (PassMessage(message)) return;//需要数据过滤
-            CCLog log = new CCLog();
-            log.Type = LogType.Debug;
-            log.Message = DateTime.Now.ToString("HH:mm:ss fff") + "  " + message;
-            cCLogs.Enqueue(log);            
+            try
+            {
+                logger.Debug(message);
+                if (PassMessage(message)) return;//需要数据过滤
+                CCLog log = new CCLog();
+                log.Type = LogType.Debug;
+                log.Message = DateTime.Now.ToString("HH:mm:ss fff") + "  " + message;
+                cCLogs.Enqueue(log);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"LogSvr Debug {ex.Message}");
+            }
+           
         }
 
         public static void Info(string message)
         {
-            logger.Info(message);
-            if (PassMessage(message)) return;//需要数据过滤
+            try
+            {
+                logger.Info(message);
+                if (PassMessage(message)) return;//需要数据过滤
 
-            CCLog log = new CCLog();
-            log.Type = LogType.Info;
-            log.Message = DateTime.Now.ToString("HH:mm:ss fff") + "  " + message;
-            cCLogs.Enqueue(log);            
+                CCLog log = new CCLog();
+                log.Type = LogType.Info;
+                log.Message = DateTime.Now.ToString("HH:mm:ss fff") + "  " + message;
+                cCLogs.Enqueue(log);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"LogSvr Info {ex.Message}");
+            }
+       
         }
 
         public static string GetMessage()

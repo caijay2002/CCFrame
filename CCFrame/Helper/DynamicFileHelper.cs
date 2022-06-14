@@ -3,7 +3,7 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 
-namespace CCFrame.FileHelper
+namespace CCFrame.Helper
 {
     /// <summary>
     /// 文件帮助类

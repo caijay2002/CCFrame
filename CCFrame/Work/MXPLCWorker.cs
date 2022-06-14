@@ -31,9 +31,6 @@ namespace CCFrame.Work
 
         private static Dictionary<string, List<IData>> MonitorMap = new Dictionary<string, List<IData>>();
 
-        private string m_IpAddress { get; set; }
-        private int m_stationNumber { get; set; }
-
         private bool IsStop { get; set; }
 
         public void Initialize(List<DriverConfigItem> configItems)
@@ -53,23 +50,46 @@ namespace CCFrame.Work
 
         public void Stop() => IsStop = true;
 
-        public OperateResult ReadData(ref IData data)
+        public OperateResult ReadData(IData data)
         {
             if(data is MXPlcData plcData)
             {
-                //bool result = false;
-                //string value;
-                //var result = MXDriver.ReadData(data);
-                //data.Value = value;
-                return OperateResult.CreateSuccessResult();
+                var result = MXDriver.ReadData(plcData);
+                if (result.IsSuccess)
+                {
+                    var value = GetConvertData(plcData.DataType, result.Content);
+
+                    Core.DataCacheSvr.UpdateCache("DataMap", data.Address, value);
+                }
+                else
+                {
+                    LogSvr.Error($"ReadData ErrorCode: {result.ErrorCode} Message: {result.Message}");
+                }
+                return result;
             }
             else
             {
-                return OperateResult.CreateFailedResult(new OperateResult(""));
+                return OperateResult.CreateFailedResult(new OperateResult($"数据格式不正确 :MXPlcData {data.Address}"));
             }
         }
 
-        public OperateResult WritePlcData(IData data) => OperateResult.CreateSuccessResult();
+        /// <summary>
+        /// 写入数据
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public OperateResult WriteData(IData data) 
+        { 
+            if(data is MXPlcData plcData)
+            {
+                short[] buffer = ShortHelper.ToShorts(plcData);
+                var result = MXDriver.WritePlcData(plcData.Address, buffer);
+                if (!result.IsSuccess) LogSvr.Error($"ReadData ErrorCode: {result.ErrorCode} Message: {result.Message}");
+                return result;
+            }
+
+            return OperateResult.CreateSuccessResult(); 
+        }
 
         private async void Run()
         {
@@ -120,29 +140,56 @@ namespace CCFrame.Work
 
                     var result = MXDriver.ReadData(data);
 
-                    switch (data.DataType)
-                    {
-                        case DataType.Ascii:
-                            item.Value = ShortHelper.ToAscii(result.Content);
-                            break;
-                        case DataType.Bit:
-                            item.Value = ShortHelper.ToBool(result.Content);
-                            break;
-                        case DataType.Int32:
-                            item.Value = ShortHelper.ToInt(result.Content);
-                            break;
-                        case DataType.Short:
-                            item.Value = result.Content[0];
-                            break;
-                        case DataType.DateTime:
+                    var value = GetConvertData(data.DataType, result.Content);
 
-                            break;
-                        default:
+                    //switch (data.DataType)
+                    //{
+                    //    case DataType.Ascii:
+                    //        item.Value = ShortHelper.ToAscii(result.Content);
+                    //        break;
+                    //    case DataType.Bit:
+                    //        item.Value = ShortHelper.ToBool(result.Content);
+                    //        break;
+                    //    case DataType.Int32:
+                    //        item.Value = ShortHelper.ToInt(result.Content);
+                    //        break;
+                    //    case DataType.Short:
+                    //        item.Value = result.Content[0];
+                    //        break;
+                    //    case DataType.DateTime:
 
-                            break;
-                    }
-                    Core.DataCacheSvr.UpdateCache("DataMap", item);
+                    //        break;
+                    //    default:
+
+                    //        break;
+                    //}
+                    Core.DataCacheSvr.UpdateCache("DataMap", item.Address, value);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 获取转化后的数据
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        private object GetConvertData(DataType type, short[] buffer)
+        {
+            switch (type)
+            {
+                case DataType.Ascii:
+                    return ShortHelper.ToAscii(buffer);
+                case DataType.Bit:
+                    return ShortHelper.ToBool(buffer);
+                case DataType.Int32:
+                    return ShortHelper.ToInt(buffer);
+                case DataType.Short:
+                    return buffer[0];
+                case DataType.DateTime:
+                    return null;
+                default:
+                    return null;
             }
         }
 
@@ -159,7 +206,7 @@ namespace CCFrame.Work
 
                     item.Value = ShortHelper.ToInt(buffer);
 
-                    Core.DataCacheSvr.UpdateCache("AlarmMap", item);
+                    //Core.DataCacheSvr.UpdateCache("AlarmMap", item);
                 }
             }
         }

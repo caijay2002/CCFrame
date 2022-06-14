@@ -28,13 +28,13 @@ namespace CCFrame.Work
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        OperateResult ReadData(ref IData data);
+        OperateResult ReadData(IData data);
         /// <summary>
         /// 写入寄存器数据
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        OperateResult WritePlcData(IData data);
+        OperateResult WriteData(IData data);
         /// <summary>
         /// 初始化数据
         /// </summary>
