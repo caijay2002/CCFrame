@@ -38,19 +38,6 @@ namespace CCFrame.Work
 
         public void Initialize(List<DriverConfigItem> configItems)
         {
-            //foreach(var item in configItems)
-            //{
-            //    switch (item.Key)
-            //    {
-            //        case "IpAddress":
-            //            m_IpAddress = item.Value;
-            //            break;
-            //        case "StationNumber":
-            //            m_stationNumber = Convert.ToInt32(item.Value);
-            //            break;
-            //    }
-            //}
-
             MXDriver.Initialize(configItems);
         }
 
@@ -72,7 +59,7 @@ namespace CCFrame.Work
             {
                 //bool result = false;
                 //string value;
-                //result = MXDriver.ReadData(data.Address, plcData.Length, data.DataType, out value);
+                //var result = MXDriver.ReadData(data);
                 //data.Value = value;
                 return OperateResult.CreateSuccessResult();
             }

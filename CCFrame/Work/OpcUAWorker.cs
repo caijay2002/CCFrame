@@ -35,7 +35,11 @@ namespace CCFrame.Work
         /// </summary>
         private static Dictionary<string, List<IData>> MonitorMap = new Dictionary<string, List<IData>>();
 
-
+        /// <summary>
+        /// 初始化配置
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="datas"></param>
         public void InitData(string key, List<IData> datas) => MonitorMap.Add(key, datas);
 
         /// <summary>
