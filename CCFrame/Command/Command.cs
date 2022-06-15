@@ -44,15 +44,16 @@ namespace CCFrame.Command
         /// </summary>
         public CmdType CmdType { get; set; }
         /// <summary>
+        /// 读取或写入
+        /// </summary>
+        public ReadOrWrite ReadOrWrite { get; set; }
+        /// <summary>
         /// 完成时间
         /// </summary>
         public DateTime FinishedTime { get; set; }
     }
 
-    /// <summary>
-    /// 命令类型
-    /// </summary>
-    public enum CmdType
+    public enum ReadOrWrite
     {
         /// <summary>
         /// 读取
@@ -62,5 +63,24 @@ namespace CCFrame.Command
         /// 写入
         /// </summary>
         Write = 1,
+    }
+
+    /// <summary>
+    /// 命令类型
+    /// </summary>
+    public enum CmdType
+    {
+        /// <summary>
+        /// 三菱PLC
+        /// </summary>
+        MXPLC = 0,
+        /// <summary>
+        /// OPCUA
+        /// </summary>
+        OPCUA = 1,
+        /// <summary>
+        /// WEB API
+        /// </summary>
+        WEB = 6,
     }
 }

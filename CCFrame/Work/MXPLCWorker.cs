@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using CCFrame.Command.Data;
 using CCFrame.DataConvert;
 
-#region << 文 件 说 明 >>
+#region << PLC工作者 >>
 /*----------------------------------------------------------------
 // 文件名称：MXPLCWorker
 // 创 建 者：蔡程健
@@ -142,27 +142,6 @@ namespace CCFrame.Work
 
                     var value = GetConvertData(data.DataType, result.Content);
 
-                    //switch (data.DataType)
-                    //{
-                    //    case DataType.Ascii:
-                    //        item.Value = ShortHelper.ToAscii(result.Content);
-                    //        break;
-                    //    case DataType.Bit:
-                    //        item.Value = ShortHelper.ToBool(result.Content);
-                    //        break;
-                    //    case DataType.Int32:
-                    //        item.Value = ShortHelper.ToInt(result.Content);
-                    //        break;
-                    //    case DataType.Short:
-                    //        item.Value = result.Content[0];
-                    //        break;
-                    //    case DataType.DateTime:
-
-                    //        break;
-                    //    default:
-
-                    //        break;
-                    //}
                     Core.DataCacheSvr.UpdateCache("DataMap", item.Address, value);
                 }
             }
