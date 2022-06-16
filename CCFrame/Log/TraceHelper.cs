@@ -34,12 +34,8 @@ namespace CCFrame.Log
         /// <summary>
         /// 将线程和任务信息写入控制台
         /// </summary>
-        /// <param name="info"></param>
-        public static void TraceThreadAndTask(string info)
-        {
-            string taskInfo = Task.CurrentId == null ? "no task" : "task " + Task.CurrentId;
-
-            Console.WriteLine($"{info} in thread {Thread.CurrentThread.ManagedThreadId} and {taskInfo}");
-        }
+        /// <param name="prefix"></param>
+        public static void Log(string prefix) =>
+    Console.WriteLine($"{prefix} task: {Task.CurrentId}, thread: {Thread.CurrentThread.ManagedThreadId}");
     }
 }
