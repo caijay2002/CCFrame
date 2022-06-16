@@ -47,6 +47,11 @@ namespace CCFrame.Command
         /// </summary>
         public Dictionary<int, Command> Commands { get; set; }
 
+        public override string ToString()
+        {
+            return $"任务名称:{CommandName} 地址：{Key} 当前步骤：{Step} 创建时间：{CreatTime} 结束时间：{OverTime}";
+        }
+
         public CommandObject()
         {
             Commands = new Dictionary<int, Command>();
