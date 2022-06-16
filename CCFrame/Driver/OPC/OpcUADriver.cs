@@ -45,14 +45,19 @@ namespace CCFrame.Driver
 
         private Action<IList, IList> m_validateResponse;
 
-        private Subscription subscription;
-
         public event MonitorDataChanged MonitorDataChanged;
 
         /// <summary>
         /// 读取数据的节点
         /// </summary>
         private ReadValueIdCollection nodesToRead = new ReadValueIdCollection();
+
+
+        public string UserName { get; set; }
+
+        public string Password { get; set; }
+
+        public string ServerUrl { get; set; } = "opc.tcp://10.118.25.229:4840";
 
         /// <summary>
         /// 连接
@@ -69,7 +74,7 @@ namespace CCFrame.Driver
                     {
                         if (m_session != null && m_session.Connected == true)
                         {
-
+                            Log.LogSvr.Info($"{ServerUrl} Session already connected!");
                         }
                         else
                         {
@@ -79,16 +84,33 @@ namespace CCFrame.Driver
 
                             ConfiguredEndpoint endpoint = new ConfiguredEndpoint(null, endpointDescription, endpointConfiguration);
 
-                            Session session = await Session.Create(
+                            Session session;
+
+                            if (UserName != null)
+                            {
+                                session = await Session.Create(
                                 m_configuration,
                                 endpoint,
                                 false,
                                 false,
                                 m_configuration.ApplicationName,
                                 30 * 60 * 1000,
-                                new UserIdentity(),
-                                null
-                            );
+                                null,
+                                null);
+                            }
+                            else
+                            {
+                                session = await Session.Create(
+                                   m_configuration,
+                                   endpoint,
+                                   false,
+                                   false,
+                                   m_configuration.ApplicationName,
+                                   30 * 60 * 1000,
+                                   new UserIdentity(UserName, Password),
+                                   null);
+
+                            }
 
                             if (session != null && session.Connected)
                             {
@@ -129,7 +151,7 @@ namespace CCFrame.Driver
                 }
                 else
                 {
-
+                    Log.LogSvr.Error($"m_session is not Initialize");
                 }
             }
             catch (Exception ex)
@@ -141,7 +163,7 @@ namespace CCFrame.Driver
         /// <summary>
         /// 初始化
         /// </summary>
-        public async void Initialize(List<DriverConfigItem> configItems)
+        public void Initialize(List<DriverConfigItem> configItems)
         {
 
             foreach (var item in configItems)
@@ -157,14 +179,10 @@ namespace CCFrame.Driver
                 }
             }
 
-            ApplicationInstance application = new ApplicationInstance();
-            application.ApplicationName = "Quickstart Console Reference Client";
+            ServerUrl = $"opc.tcp://{m_IpAddress}:{m_Port}";
+
+            ApplicationInstance application = InitConfig();
             application.ApplicationType = ApplicationType.Client;
-
-            await application.LoadApplicationConfiguration("ConsoleReferenceClient.Config.xml", silent: false);
-            await application.CheckApplicationInstanceCertificate(silent: false, minimumKeySize: 0);
-
-            InitConfig("ConnentDemoConfig");
 
             m_validateResponse = ClientBase.ValidateResponse;
             m_configuration = application.ApplicationConfiguration;
@@ -175,144 +193,27 @@ namespace CCFrame.Driver
         /// 初始化配置
         /// </summary>
         /// <returns></returns>
-        private static ApplicationInstance InitConfig(string fileName)
+        private ApplicationInstance InitConfig()
         {
-            /**
-            *不加证书验证配置会报错
-            */
-            var certificateValidator = new CertificateValidator();
-            certificateValidator.CertificateValidation += (sender, eventArgs) =>
+            ApplicationInstance application = new ApplicationInstance();
+            application.ApplicationType = ApplicationType.Client;
+            var ap = new ApplicationConfiguration()
             {
-                if (ServiceResult.IsGood(eventArgs.Error))
-                    eventArgs.Accept = true;
-                else if (eventArgs.Error.StatusCode.Code == StatusCodes.BadCertificateUntrusted)
-                    eventArgs.Accept = true;
-                else
-                    throw new Exception(string.Format("Failed to validate certificate with error code {0}: {1}",
-                        eventArgs.Error.Code, eventArgs.Error.AdditionalInfo));
-            };
-            return new ApplicationInstance
-            {
-                /*
-                 * 指定应用类型
-                 */
-                ApplicationType = ApplicationType.Client,
-                /*
-                 * 配置名
-                 */
-                ConfigSectionName = fileName,
-                /*
-                 * 应用的个配置项
-                 */
-                ApplicationConfiguration = new ApplicationConfiguration
+                ApplicationName = "BandexOPCClient",
+                ApplicationUri = $"opc.tcp://{m_IpAddress}:{m_Port}/",
+                ClientConfiguration = new ClientConfiguration
                 {
-                    ApplicationName = "ConnentDemo",
-                    ApplicationType = ApplicationType.Client,
-                    /*
-                     * 证书验证配置
-                     */
-                    CertificateValidator = certificateValidator,
-                    /*
-                     * 服务端配置
-                     */
-                    ServerConfiguration = new ServerConfiguration
+                    DefaultSessionTimeout = 60000,
+                    WellKnownDiscoveryUrls = new StringCollection()
                     {
-                        MaxSubscriptionCount = 100000,
-                        MaxMessageQueueSize = 1000000,
-                        MaxNotificationQueueSize = 1000000,
-                        MaxPublishRequestCount = 10000000,
-                    },
-
-                    /*
-                     * 安全配置
-                     */
-                    SecurityConfiguration = new SecurityConfiguration
-                    {
-                        AutoAcceptUntrustedCertificates = true,
-                        //RejectSHA1SignedCertificates = false,
-                        //MinimumCertificateKeySize = 1024,
-                    },
-
-                    TransportQuotas = new TransportQuotas
-                    {
-                        OperationTimeout = 6000000,
-                        MaxStringLength = int.MaxValue,
-                        MaxByteStringLength = int.MaxValue,
-                        MaxArrayLength = 65535,
-                        MaxMessageSize = 419430400,
-                        MaxBufferSize = 65535,
-                        ChannelLifetime = -1,
-                        SecurityTokenLifetime = -1
-                    },
-                    /*
-                     * 客户端配置
-                     */
-                    ClientConfiguration = new ClientConfiguration
-                    {
-                        DefaultSessionTimeout = -1,
-                        MinSubscriptionLifetime = -1,
-                    },
-
-                    DisableHiResClock = true
+                        $"opc.tcp://{m_IpAddress}:{m_Port}/"
+                    }
                 }
             };
+            application.ApplicationConfiguration = ap;
+            return application;
         }
-
-        /// <summary>
-        /// 初始化订阅
-        /// </summary>
-        public void InitializeSubscribe()
-        {
-            if (m_session == null || m_session.Connected == false)
-            {
-                return;
-            }
-
-            try
-            {
-                subscription = new Subscription(m_session.DefaultSubscription);
-
-                subscription.DisplayName = "Console ReferenceClient Subscription";
-                subscription.PublishingEnabled = true;
-                subscription.PublishingInterval = 1000;
-
-                m_session.AddSubscription(subscription);
-
-                subscription.Create();
-            }
-            catch (Exception ex)
-            {
-                Log.LogSvr.Error($"InitializeSubscribe Error : {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// 注册 订阅数据
-        /// </summary>
-        /// <param name="itemName"></param>
-        /// <param name="itemType"></param>
-        public void RegisterSubscribe(string itemName, string itemType)
-        {
-            try
-            {
-                MonitoredItem intMonitoredItem = new MonitoredItem(subscription.DefaultItem);
-                // Int32 Node - Objects\CTT\Scalar\Simulation\Int32
-                intMonitoredItem.StartNodeId = new NodeId(itemName);
-                intMonitoredItem.AttributeId = Attributes.Value;
-                intMonitoredItem.DisplayName = itemType;
-                intMonitoredItem.SamplingInterval = 1000;
-                intMonitoredItem.Notification += OnMonitoredItemNotification;
-
-                subscription.AddItem(intMonitoredItem);
-
-                subscription.ApplyChanges();
-            }
-            catch (Exception ex)
-            {
-                //Console.WriteLine(" RegisterSubscribe Error: " + ex.Message);
-                Log.LogSvr.Error($"RegisterSubscribe Error : {ex.Message}");
-            }
-        }
+        
         /// <summary>
         /// 注册 更新数据项
         /// </summary>
@@ -322,28 +223,7 @@ namespace CCFrame.Driver
             nodesToRead.Add(new ReadValueId() { NodeId = itemName, AttributeId = Attributes.Value });
         }
 
-        /// <summary>
-        /// 监听数据项
-        /// </summary>
-        private void OnMonitoredItemNotification(MonitoredItem monitoredItem, MonitoredItemNotificationEventArgs e)
-        {
-            try
-            {
-                // Log MonitoredItem Notification event
-                MonitoredItemNotification notification = e.NotificationValue as MonitoredItemNotification;
-
-                if (MonitorDataChanged != null)
-                    MonitorDataChanged(monitoredItem.StartNodeId.ToString(), notification.Value.ToString());
-                //ns=3;s="MES_To_PLC_DATA"."MES_2_PLC"."Heart_Beat"
-                if (monitoredItem.StartNodeId.ToString() != "ns=3;s=\"MES_To_PLC_DATA\".\"MES_2_PLC\".\"Heart_Beat\"")
-                    Console.WriteLine("Notification Received for Variable \"{0}\" and Value = {1}.", monitoredItem.StartNodeId, notification.Value.ToString());
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-
+        
         /// <summary>
         /// 写入节点地址，和数值
         /// </summary>
@@ -608,7 +488,11 @@ namespace CCFrame.Driver
         }
 
 
-
+        /// <summary>
+        /// 证书验证
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CertificateValidation(CertificateValidator sender, CertificateValidationEventArgs e)
         {
             bool certificateAccepted = true;
@@ -621,7 +505,7 @@ namespace CCFrame.Driver
 
             if (certificateAccepted)
             {
-                //MessageBox.Show("Untrusted Certificate accepted. SubjectName = {0}", e.Certificate.SubjectName.ToString());
+                Log.LogSvr.Error($"Untrusted Certificate accepted. SubjectName = {e.Certificate.SubjectName.ToString()}");
             }
         }
     }
