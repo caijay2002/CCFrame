@@ -49,7 +49,16 @@ namespace CCFrame.Command
 
         public override string ToString()
         {
-            return $"任务名称:{CommandName} 地址：{Key} 当前步骤：{Step} 创建时间：{CreatTime} 结束时间：{OverTime}";
+            try
+            {
+                if (Step == -1) return $"任务异常结束:{CommandName} 地址：{Key} 创建时间：{CreatTime} 结束时间：{OverTime}";
+                return $"任务名称:{CommandName} 地址：{Key} 当前步骤：{Commands[Step].StepName} 地址 {Commands[Step].Data.Address} 数值 {Commands[Step].Data.Value} 创建时间：{CreatTime} 结束时间：{OverTime}";
+            }
+            catch (Exception ex)
+            {
+                return $"任务异常:{CommandName} 消息：{ex.Message}";
+            }
+
         }
 
         public CommandObject()
