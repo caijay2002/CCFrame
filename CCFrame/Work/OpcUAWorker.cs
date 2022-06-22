@@ -1,5 +1,6 @@
 ﻿using CCFrame.Command.Data;
 using CCFrame.Driver;
+using CCFrame.Log;
 using CCFrame.Version;
 using System;
 using System.Collections.Generic;
@@ -26,9 +27,9 @@ namespace CCFrame.Work
     [LastModified("2022-06-11", "OPCUA驱动工作者")]
     public class OpcUAWorker : IWorker
     {
-        //private string m_IpAddress { get; set; }
-
         private OpcUADriver OpcUADriver = new OpcUADriver();
+        private bool IsStop { get; set; }
+        public bool IsConnected { get; set; }
 
         /// <summary>
         /// 监控的数据表
@@ -53,12 +54,34 @@ namespace CCFrame.Work
 
         public OperateResult ReadData(IData data)
         {
-            return OperateResult.CreateSuccessResult();
+            if (data is OPCData opcdata)
+            {
+                var result = OpcUADriver.ReadData(data.Address);
+                if (result.IsSuccess)
+                {
+                    //var value = GetConvertData(plcData.DataType, result.Content);
+
+                    Core.DataCacheSvr.UpdateCache("DataMap", data.Address, data.Value);
+                }
+                else
+                {
+                    Log.LogSvr.Error($"ReadData ErrorCode: {result.ErrorCode} Message: {result.Message}");
+                }
+                //return result;
+                return OperateResult.CreateSuccessResult();
+            }
+            else
+            {
+                return OperateResult.CreateFailedResult(new OperateResult($"数据格式不正确 :MXPlcData {data.Address}"));
+            }
         }
 
         public void Start()
         {
-
+            Task t_Run = Task.Run(() =>
+            {
+                Run();
+            });
         }
 
         public void Stop()
@@ -66,9 +89,68 @@ namespace CCFrame.Work
 
         }
 
+
+
         public OperateResult WriteData(IData data)
         {
             return OperateResult.CreateSuccessResult();
+        }
+
+
+        private async void Run()
+        {
+            while (true)
+            {
+                try
+                {
+                    if (IsStop == true)//是否退出
+                    {
+                        return;
+                    }
+
+                    if (IsConnected == false)//是否连接
+                    {
+                        var connectResult = OpcUADriver.Connect();
+                        //if (!connectResult.IsSuccess)
+                        //{
+                        //    LogSvr.Error($"连接失败 {connectResult.Message}");
+                        //    await Task.Delay(1000);
+                        //    continue;
+                        //}
+                        //else
+                        //{
+                        //    IsConnected = true;
+                        //}
+                    }
+
+                    UpdateDatas();
+
+                    //UpdateAlarms();
+
+                    await Task.Delay(1000);
+                }
+                catch (Exception ex)
+                {
+                    LogSvr.Error(string.Format("RunThread Error :{0}", ex.Message, ex.InnerException));
+                }
+            }
+        }
+
+        private void UpdateDatas()
+        {
+            //foreach (var item in MonitorMap["DataMap"])
+            //{
+            //    if (item is MXPlcData data)
+            //    {
+            //        short[] buffer = new short[data.Length];
+
+            //        var result = MXDriver.ReadData(data);
+
+            //        var value = GetConvertData(data.DataType, result.Content);
+
+            //        Core.DataCacheSvr.UpdateCache("DataMap", item.Address, value);
+            //    }
+            //}
         }
     }
 }

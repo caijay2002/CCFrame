@@ -427,7 +427,7 @@ namespace CCFrame.Driver
         /// </summary>
         /// <param name="nodeID"></param>
         /// <returns></returns>
-        public OperateResult<string> ReadValue(string nodeID)
+        public OperateResult<string> ReadData(string nodeID)
         {
             OperateResult<string> operateResult = new OperateResult<string>();
 
