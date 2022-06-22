@@ -29,6 +29,12 @@ namespace CCFrame.UIForm.DataMap
         /// </summary>
         private void InitializeComponent()
         {
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.Btn_Reflash = new System.Windows.Forms.Button();
+            this.txt_Value = new System.Windows.Forms.TextBox();
+            this.txt_Address = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btn_ChangeValue = new System.Windows.Forms.Button();
             this.dataMap_View = new System.Windows.Forms.DataGridView();
             this.Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Length = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -37,13 +43,76 @@ namespace CCFrame.UIForm.DataMap
             this.TimeStamp = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PLCDataType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Btn_Reflash = new System.Windows.Forms.Button();
-            this.txt_Value = new System.Windows.Forms.TextBox();
-            this.txt_Address = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btn_ChangeValue = new System.Windows.Forms.Button();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataMap_View)).BeginInit();
             this.SuspendLayout();
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.Btn_Reflash);
+            this.panel1.Controls.Add(this.txt_Value);
+            this.panel1.Controls.Add(this.txt_Address);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.btn_ChangeValue);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 527);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(818, 53);
+            this.panel1.TabIndex = 17;
+            // 
+            // Btn_Reflash
+            // 
+            this.Btn_Reflash.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_Reflash.Location = new System.Drawing.Point(679, 8);
+            this.Btn_Reflash.Margin = new System.Windows.Forms.Padding(4);
+            this.Btn_Reflash.Name = "Btn_Reflash";
+            this.Btn_Reflash.Size = new System.Drawing.Size(115, 37);
+            this.Btn_Reflash.TabIndex = 21;
+            this.Btn_Reflash.Text = "刷新数值";
+            this.Btn_Reflash.UseVisualStyleBackColor = true;
+            this.Btn_Reflash.Click += new System.EventHandler(this.Btn_Reflash_Click);
+            // 
+            // txt_Value
+            // 
+            this.txt_Value.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txt_Value.Location = new System.Drawing.Point(225, 14);
+            this.txt_Value.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_Value.Name = "txt_Value";
+            this.txt_Value.Size = new System.Drawing.Size(148, 23);
+            this.txt_Value.TabIndex = 20;
+            // 
+            // txt_Address
+            // 
+            this.txt_Address.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txt_Address.Enabled = false;
+            this.txt_Address.Location = new System.Drawing.Point(80, 14);
+            this.txt_Address.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_Address.Name = "txt_Address";
+            this.txt_Address.Size = new System.Drawing.Size(116, 23);
+            this.txt_Address.TabIndex = 19;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(25, 18);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(44, 17);
+            this.label1.TabIndex = 18;
+            this.label1.Text = "地址：";
+            // 
+            // btn_ChangeValue
+            // 
+            this.btn_ChangeValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_ChangeValue.Location = new System.Drawing.Point(542, 8);
+            this.btn_ChangeValue.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_ChangeValue.Name = "btn_ChangeValue";
+            this.btn_ChangeValue.Size = new System.Drawing.Size(115, 37);
+            this.btn_ChangeValue.TabIndex = 17;
+            this.btn_ChangeValue.Text = "修改数值";
+            this.btn_ChangeValue.UseVisualStyleBackColor = true;
+            this.btn_ChangeValue.Click += new System.EventHandler(this.btn_ChangeValue_Click);
             // 
             // dataMap_View
             // 
@@ -60,7 +129,7 @@ namespace CCFrame.UIForm.DataMap
             this.TimeStamp,
             this.PLCDataType,
             this.Description});
-            this.dataMap_View.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dataMap_View.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataMap_View.Location = new System.Drawing.Point(0, 0);
             this.dataMap_View.Margin = new System.Windows.Forms.Padding(4);
             this.dataMap_View.MultiSelect = false;
@@ -68,9 +137,8 @@ namespace CCFrame.UIForm.DataMap
             this.dataMap_View.ReadOnly = true;
             this.dataMap_View.RowTemplate.Height = 23;
             this.dataMap_View.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataMap_View.Size = new System.Drawing.Size(818, 520);
-            this.dataMap_View.TabIndex = 7;
-            this.dataMap_View.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataMap_View_CellClick);
+            this.dataMap_View.Size = new System.Drawing.Size(818, 527);
+            this.dataMap_View.TabIndex = 18;
             // 
             // Address
             // 
@@ -78,7 +146,7 @@ namespace CCFrame.UIForm.DataMap
             this.Address.HeaderText = "地址";
             this.Address.Name = "Address";
             this.Address.ReadOnly = true;
-            this.Address.Width = 80;
+            this.Address.Width = 200;
             // 
             // Length
             // 
@@ -127,80 +195,29 @@ namespace CCFrame.UIForm.DataMap
             this.Description.Name = "Description";
             this.Description.ReadOnly = true;
             // 
-            // Btn_Reflash
-            // 
-            this.Btn_Reflash.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_Reflash.Location = new System.Drawing.Point(669, 528);
-            this.Btn_Reflash.Margin = new System.Windows.Forms.Padding(4);
-            this.Btn_Reflash.Name = "Btn_Reflash";
-            this.Btn_Reflash.Size = new System.Drawing.Size(115, 37);
-            this.Btn_Reflash.TabIndex = 16;
-            this.Btn_Reflash.Text = "刷新数值";
-            this.Btn_Reflash.UseVisualStyleBackColor = true;
-            this.Btn_Reflash.Click += new System.EventHandler(this.Btn_Reflash_Click);
-            // 
-            // txt_Value
-            // 
-            this.txt_Value.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txt_Value.Location = new System.Drawing.Point(215, 534);
-            this.txt_Value.Margin = new System.Windows.Forms.Padding(4);
-            this.txt_Value.Name = "txt_Value";
-            this.txt_Value.Size = new System.Drawing.Size(148, 23);
-            this.txt_Value.TabIndex = 15;
-            // 
-            // txt_Address
-            // 
-            this.txt_Address.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txt_Address.Enabled = false;
-            this.txt_Address.Location = new System.Drawing.Point(70, 534);
-            this.txt_Address.Margin = new System.Windows.Forms.Padding(4);
-            this.txt_Address.Name = "txt_Address";
-            this.txt_Address.Size = new System.Drawing.Size(116, 23);
-            this.txt_Address.TabIndex = 14;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 538);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 17);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "地址：";
-            // 
-            // btn_ChangeValue
-            // 
-            this.btn_ChangeValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_ChangeValue.Location = new System.Drawing.Point(532, 528);
-            this.btn_ChangeValue.Margin = new System.Windows.Forms.Padding(4);
-            this.btn_ChangeValue.Name = "btn_ChangeValue";
-            this.btn_ChangeValue.Size = new System.Drawing.Size(115, 37);
-            this.btn_ChangeValue.TabIndex = 12;
-            this.btn_ChangeValue.Text = "修改数值";
-            this.btn_ChangeValue.UseVisualStyleBackColor = true;
-            this.btn_ChangeValue.Click += new System.EventHandler(this.btn_ChangeValue_Click);
-            // 
             // DataMapControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.Btn_Reflash);
-            this.Controls.Add(this.txt_Value);
-            this.Controls.Add(this.txt_Address);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.btn_ChangeValue);
             this.Controls.Add(this.dataMap_View);
+            this.Controls.Add(this.panel1);
             this.Name = "DataMapControl";
             this.Size = new System.Drawing.Size(818, 580);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataMap_View)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button Btn_Reflash;
+        private System.Windows.Forms.TextBox txt_Value;
+        private System.Windows.Forms.TextBox txt_Address;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btn_ChangeValue;
         private System.Windows.Forms.DataGridView dataMap_View;
         private System.Windows.Forms.DataGridViewTextBoxColumn Address;
         private System.Windows.Forms.DataGridViewTextBoxColumn Length;
@@ -209,10 +226,5 @@ namespace CCFrame.UIForm.DataMap
         private System.Windows.Forms.DataGridViewTextBoxColumn TimeStamp;
         private System.Windows.Forms.DataGridViewTextBoxColumn PLCDataType;
         private System.Windows.Forms.DataGridViewTextBoxColumn Description;
-        private System.Windows.Forms.Button Btn_Reflash;
-        private System.Windows.Forms.TextBox txt_Value;
-        private System.Windows.Forms.TextBox txt_Address;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btn_ChangeValue;
     }
 }

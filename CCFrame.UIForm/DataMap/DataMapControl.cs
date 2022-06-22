@@ -31,19 +31,24 @@ namespace CCFrame.UIForm.DataMap
             m_SourceKey = key;
         }
 
+        public async void ReflashData()
+        {
+            dataMap_View.DataSource = await GetData();
+        }
+
         /// <summary>
         /// 刷新数据
         /// </summary>
         /// <param name="datas"></param>
-        public async void ReflashData()
+        public Task<List<Command.Data.IData>> GetData()
         {
-            //dataMap_View.DataSource = datas;
-            dataMap_View.DataSource = await Task.Run(() => DataCacheSvr.GetDataList("DataMap"));
+            return Task.Run(() => DataCacheSvr.GetDataList("DataMap"));
+            //dataMap_View.DataSource = dataList;
         }
 
         private void dataMap_View_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dataMap_View.SelectedRows[0].DataBoundItem is CCFrame.Driver.MXPlcData selectedItem)
+            if (dataMap_View.SelectedRows[0].DataBoundItem is Command.Data.IData selectedItem)
             {
                 txt_Address.Text = selectedItem.Address;
             }
@@ -84,6 +89,7 @@ namespace CCFrame.UIForm.DataMap
                 //DataCacheSvr.UpdateCache("DataMap", selectedItem.Address, value);
 
                 ReflashData();
+                //dataMap_View.DataSource = await ReflashData();
 
                 dataMap_View.Rows[selectedIndex].Selected = true;
             }

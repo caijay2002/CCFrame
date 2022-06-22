@@ -31,9 +31,9 @@ namespace CCFrame.Work
         private bool IsStop { get; set; }
         public bool IsConnected { get; set; }
 
-        /// <summary>
-        /// 监控的数据表
-        /// </summary>
+        ///// <summary>
+        ///// 监控的数据表
+        ///// </summary>
         private static Dictionary<string, List<IData>> MonitorMap = new Dictionary<string, List<IData>>();
 
         /// <summary>
@@ -41,7 +41,15 @@ namespace CCFrame.Work
         /// </summary>
         /// <param name="key"></param>
         /// <param name="datas"></param>
-        public void InitData(string key, List<IData> datas) => MonitorMap.Add(key, datas);
+        public void InitData(string key, List<IData> datas)// => MonitorMap.Add(key, datas);
+        {
+            foreach(var item in datas)
+            {   //注册需要刷新的数据
+                OpcUADriver.RegisterUpdate(item.Address);
+            }
+
+            MonitorMap.Add(key, datas);
+        }
 
         /// <summary>
         /// 初始化配置
@@ -110,18 +118,20 @@ namespace CCFrame.Work
 
                     if (IsConnected == false)//是否连接
                     {
-                        var connectResult = OpcUADriver.Connect();
-                        //if (!connectResult.IsSuccess)
-                        //{
-                        //    LogSvr.Error($"连接失败 {connectResult.Message}");
-                        //    await Task.Delay(1000);
-                        //    continue;
-                        //}
-                        //else
-                        //{
-                        //    IsConnected = true;
-                        //}
+                        var connectResult = await OpcUADriver.Connect();
+                        if (!connectResult.IsSuccess)
+                        {
+                            LogSvr.Error($"连接失败 {connectResult.Message}");
+                            await Task.Delay(1000);
+                            continue;
+                        }
+                        else
+                        {
+                            IsConnected = true;
+                        }
                     }
+
+                    //OpcUADriver.UpdateData();
 
                     UpdateDatas();
 
@@ -138,19 +148,17 @@ namespace CCFrame.Work
 
         private void UpdateDatas()
         {
-            //foreach (var item in MonitorMap["DataMap"])
-            //{
-            //    if (item is MXPlcData data)
-            //    {
-            //        short[] buffer = new short[data.Length];
+            foreach (var item in MonitorMap["DataMap"])
+            {
+                if (item is OPCData data)
+                {
+                    var result = OpcUADriver.ReadData(item.Address);
 
-            //        var result = MXDriver.ReadData(data);
+                    var value = result.Content;
 
-            //        var value = GetConvertData(data.DataType, result.Content);
-
-            //        Core.DataCacheSvr.UpdateCache("DataMap", item.Address, value);
-            //    }
-            //}
+                    Core.DataCacheSvr.UpdateCache("DataMap", item.Address, value);
+                }
+            }
         }
     }
 }

@@ -45,7 +45,14 @@ namespace CCFrame.Driver
 
         private Action<IList, IList> m_validateResponse;
 
-        public event MonitorDataChanged MonitorDataChanged;
+        public bool IsConnected
+        {
+            get
+            {
+                if (m_session == null) return false;
+                return m_session.Connected;
+            }
+        }
 
         /// <summary>
         /// 读取数据的节点
@@ -57,7 +64,7 @@ namespace CCFrame.Driver
 
         public string Password { get; set; }
 
-        public string ServerUrl { get; set; } = "opc.tcp://10.118.25.229:4840";
+        public string ServerUrl { get; set; } = "opc.tcp://192.168.0.177:49321";
 
         /// <summary>
         /// 连接
@@ -72,13 +79,13 @@ namespace CCFrame.Driver
                 {
                     try
                     {
-                        if (m_session != null && m_session.Connected == true)
+                        if (IsConnected)
                         {
                             Log.LogSvr.Info($"{ServerUrl} Session already connected!");
                         }
                         else
                         {
-                            EndpointDescription endpointDescription = CoreClientUtils.SelectEndpoint(m_IpAddress, false);
+                            EndpointDescription endpointDescription = CoreClientUtils.SelectEndpoint(ServerUrl, false);
 
                             EndpointConfiguration endpointConfiguration = EndpointConfiguration.Create(m_configuration);
 
@@ -95,7 +102,7 @@ namespace CCFrame.Driver
                                 false,
                                 m_configuration.ApplicationName,
                                 30 * 60 * 1000,
-                                null,
+                                new UserIdentity(UserName, Password),
                                 null);
                             }
                             else
@@ -107,7 +114,7 @@ namespace CCFrame.Driver
                                    false,
                                    m_configuration.ApplicationName,
                                    30 * 60 * 1000,
-                                   new UserIdentity(UserName, Password),
+                                   null,
                                    null);
 
                             }
@@ -115,15 +122,17 @@ namespace CCFrame.Driver
                             if (session != null && session.Connected)
                             {
                                 m_session = session;
-                            }
+                                return OperateResult.CreateSuccessResult();
+                            }                           
                         }
                     }
                     catch (Exception ex)
                     {
                         Log.LogSvr.Error($"Create Session Error : {ex.Message}");
+                        return OperateResult.CreateFailedResult(new OperateResult($"Create Session Error : {ex.Message}"));
                     }
 
-                    return OperateResult.CreateSuccessResult();
+                    return OperateResult.CreateFailedResult(new OperateResult($"Connect Session Error"));
                 }
                 else
                 {
@@ -405,9 +414,7 @@ namespace CCFrame.Driver
                         operateResult.Message = writeResult.ToString();
                         return operateResult;
                     }//写入失败
-
                 }
-
                 operateResult.IsSuccess = true;
                 return operateResult;
             }
@@ -427,52 +434,26 @@ namespace CCFrame.Driver
         /// </summary>
         /// <param name="nodeID"></param>
         /// <returns></returns>
-        public OperateResult<string> ReadData(string nodeID)
+        public OperateResult<object> ReadData(string nodeID)
         {
-            OperateResult<string> operateResult = new OperateResult<string>();
+            OperateResult<object> operateResult = new OperateResult<object>();
 
             ReadValueIdCollection readNode = new ReadValueIdCollection();
 
             readNode.Add(new ReadValueId() { NodeId = nodeID, AttributeId = Attributes.Value });
 
-            if (m_session == null || m_session.Connected == false)
+            if (!IsConnected)
             {
-                operateResult.IsSuccess = false;
-                operateResult.Message = "nodeID:" + nodeID + "m_session == null || m_session.Connected == false";
-                return operateResult;
+                return OperateResult.CreateFailedResult<object>(new OperateResult("nodeID:" + nodeID + "m_session == null || m_session.Connected == false"));
             }
 
             try
             {
-                m_session.Read(
-                    null,
-                    0,
-                    TimestampsToReturn.Both,
-                    readNode,
-                    out DataValueCollection resultsValues,
-                    out DiagnosticInfoCollection diagnosticInfos);
+                DataValue dataValue = m_session.ReadValue(nodeID);
 
-                m_validateResponse(resultsValues, readNode);
+                operateResult.IsSuccess = dataValue.StatusCode == 0;
+                if (operateResult.IsSuccess) operateResult.Content = dataValue.Value;
 
-                foreach (DataValue result in resultsValues)
-                {
-                    if (result.StatusCode.Code != 0)
-                    {
-                        Console.WriteLine("  " + result.ToString());
-                        operateResult.ErrorCode = (int)result.StatusCode.Code;
-                        operateResult.IsSuccess = false;
-                        operateResult.Message = result.ToString();
-                        return operateResult;
-                    }
-                    else
-                    {
-                        operateResult.Content = result.Value.ToString();
-                    }
-                }
-
-                //DataValue namespaceArray = m_session.ReadValue(Variables.Server_NamespaceArray);
-
-                operateResult.IsSuccess = true;
                 return operateResult;
 
             }
@@ -483,10 +464,51 @@ namespace CCFrame.Driver
                 //发生异常强制断开连接
                 Disconnect();
 
-                return OperateResult.CreateFailedResult<string>(new OperateResult($" Write Data Error: {ex.Message}"));
+                return OperateResult.CreateFailedResult<object>(new OperateResult($" Write Data Error: {ex.Message}"));
             }
         }
 
+        public async void UpdateData()
+        {
+            if (!IsConnected)
+            {
+                var ret = await Connect();
+
+                if (!ret.IsSuccess) return;
+            }
+
+            try
+            {
+                m_session.Read(
+                    null,
+                    0,
+                    TimestampsToReturn.Both,
+                    nodesToRead,
+                    out DataValueCollection resultsValues,
+                    out DiagnosticInfoCollection diagnosticInfos);
+
+                m_validateResponse(resultsValues, nodesToRead);
+
+                for (int i = 0; i < nodesToRead.Count; i++)
+                {
+
+                    if (resultsValues[i].StatusCode.Code != 0)
+                    {
+                        Console.WriteLine("Error : " + resultsValues[i].ToString());
+                        return;
+                    }
+                }
+
+                DataValue namespaceArray = m_session.ReadValue(Variables.Server_NamespaceArray);
+
+            }
+            catch (Exception ex)
+            {
+                Log.LogSvr.Error($"UpdateData Errorr : {ex.Message}");
+
+                Disconnect();
+            }
+        }
 
         /// <summary>
         /// 证书验证
