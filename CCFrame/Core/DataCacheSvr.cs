@@ -62,12 +62,7 @@ namespace CCFrame.Core
 
         public static void InitializeCache(string key, List<IData> dataList)
         {
-            DataMap.AddOrUpdate(key, dataList, 
-                (oldkey, oldValue) => 
-                {
-                    dataList.ForEach(item => oldValue.Add(item));
-                    return oldValue;
-                });
+            DataMap.AddOrUpdate(key, dataList, (oldkey, oldValue) => { return dataList; });
         }
         /// <summary>
         /// 更新缓存

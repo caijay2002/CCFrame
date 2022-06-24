@@ -32,12 +32,12 @@ namespace CodeCollect
 {
     internal class DataFlowSample
     {
-        static void Main()
-        {
-            var target = SetupPipeline();
-            target.Post(".");
-            Console.ReadLine();
-        }
+        //static void Main()
+        //{
+        //    var target = SetupPipeline();
+        //    target.Post(".");
+        //    Console.ReadLine();
+        //}
         /// <summary>
         /// 获取.cs为扩展名的文件
         /// </summary>

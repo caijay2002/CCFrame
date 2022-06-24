@@ -32,7 +32,7 @@ namespace CodeCollect
     internal class ConsoleKeyBoardDemo
     {
         //启用消息的产生者和使用者
-        static void Main()
+        static void MainTest()
         {
             Task t1 = Task.Run(() => Producer());
             Task t2 = Task.Run(async () => await ConsumerAsync());
