@@ -31,10 +31,10 @@ namespace CCFrame.Work
         private bool IsStop { get; set; }
         public bool IsConnected { get; set; }
 
-        ///// <summary>
-        ///// 监控的数据表
-        ///// </summary>
-        private static Dictionary<string, List<IData>> MonitorMap = new Dictionary<string, List<IData>>();
+        /// <summary>
+        /// 监控的数据表
+        /// </summary>
+        private Dictionary<string, List<IData>> MonitorMap = new Dictionary<string, List<IData>>();
 
         /// <summary>
         /// 初始化配置
