@@ -64,7 +64,7 @@ namespace CCFrame.Driver
 
         public string Password { get; set; }
 
-        public string ServerUrl { get; set; } = "opc.tcp://192.168.0.177:49321";
+        public string ServerUrl { get; set; } // "opc.tcp://192.168.0.177:49321";
 
         /// <summary>
         /// 连接
@@ -174,7 +174,6 @@ namespace CCFrame.Driver
         /// </summary>
         public void Initialize(List<DriverConfigItem> configItems)
         {
-
             foreach (var item in configItems)
             {
                 switch (item.Key)
@@ -188,6 +187,7 @@ namespace CCFrame.Driver
                 }
             }
 
+            //根据IP和端口初始化连接字符串
             ServerUrl = $"opc.tcp://{m_IpAddress}:{m_Port}";
 
             ApplicationInstance application = InitConfig();
@@ -449,6 +449,8 @@ namespace CCFrame.Driver
 
             try
             {
+                //Log.LogSvr.Info($"ReadData  : {nodeID}");
+
                 DataValue dataValue = m_session.ReadValue(nodeID);
 
                 operateResult.IsSuccess = dataValue.StatusCode == 0;
@@ -459,12 +461,12 @@ namespace CCFrame.Driver
             }
             catch (Exception ex)
             {
-                Log.LogSvr.Error($"Write Data Errorr : {ex.Message}");
+                Log.LogSvr.Error($"{m_IpAddress} nodeID {nodeID}  ReadData Errorr : {ex.Message}");
 
                 //发生异常强制断开连接
                 Disconnect();
 
-                return OperateResult.CreateFailedResult<object>(new OperateResult($" Write Data Error: {ex.Message}"));
+                return OperateResult.CreateFailedResult<object>(new OperateResult($"{m_IpAddress} ReadData Error: {ex.Message}"));
             }
         }
 
@@ -497,9 +499,17 @@ namespace CCFrame.Driver
                         Console.WriteLine("Error : " + resultsValues[i].ToString());
                         return;
                     }
+                    else
+                    {
+                        Core.DataCacheSvr.UpdateCache("DataMap", nodesToRead[i].NodeId.ToString(), resultsValues[i].Value);
+
+                    }
                 }
 
                 DataValue namespaceArray = m_session.ReadValue(Variables.Server_NamespaceArray);
+                Log.LogSvr.Info($"{m_IpAddress} StatusCode {namespaceArray.StatusCode}");
+
+
 
             }
             catch (Exception ex)
