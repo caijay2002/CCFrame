@@ -60,7 +60,7 @@ namespace CCFrame.Work
             OpcUADriver.Initialize(configItems);
         }
 
-        public OperateResult ReadData(IData data)
+        public OperateResult<object> ReadData(IData data)
         {
             if (data is OPCData opcdata)
             {
@@ -76,11 +76,11 @@ namespace CCFrame.Work
                     Log.LogSvr.Error($"ReadData ErrorCode: {result.ErrorCode} Message: {result.Message}");
                 }
                 //return result;
-                return OperateResult.CreateSuccessResult();
+                return result;
             }
             else
             {
-                return OperateResult.CreateFailedResult(new OperateResult($"数据格式不正确 :MXPlcData {data.Address}"));
+                return OperateResult.CreateFailedResult<object>(new OperateResult($"数据格式不正确 :MXPlcData {data.Address}"));
             }
         }
 

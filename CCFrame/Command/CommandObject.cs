@@ -51,7 +51,7 @@ namespace CCFrame.Command
         {
             try
             {
-                if (Step == -1) return $"任务异常结束:{CommandName} 地址：{Key} 创建时间：{CreatTime} 结束时间：{OverTime}";
+                if (Step == -1) return $"任务异常结束:{CommandName} 地址：{Key}  创建时间：{CreatTime} 结束时间：{OverTime}";
                 return $"任务名称:{CommandName} 地址：{Key} 当前步骤：{Commands[Step-1].StepName} 地址 {Commands[Step-1].Data.Address} 数值 {Commands[Step-1].Data.Value} 创建时间：{CreatTime} 结束时间：{OverTime}";
             }
             catch (Exception ex)

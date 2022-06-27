@@ -28,7 +28,7 @@ namespace CCFrame.Work
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        OperateResult ReadData(IData data);
+        OperateResult<object> ReadData(IData data);
         /// <summary>
         /// 写入寄存器数据
         /// </summary>

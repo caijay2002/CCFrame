@@ -50,26 +50,30 @@ namespace CCFrame.Work
 
         public void Stop() => IsStop = true;
 
-        public OperateResult ReadData(IData data)
+        public OperateResult<object> ReadData(IData data)
         {
             if(data is MXPlcData plcData)
             {
+                OperateResult<object> readResult = OperateResult.CreateSuccessResult<object>(null);
                 var result = MXDriver.ReadData(plcData);
                 if (result.IsSuccess)
                 {
                     var value = GetConvertData(plcData.DataType, result.Content);
 
+                    readResult.Content = value;
+
                     Core.DataCacheSvr.UpdateCache("DataMap", data.Address, value);
                 }
                 else
                 {
+                    readResult.Message = $"ReadData ErrorCode: {result.ErrorCode} Message: {result.Message}";
                     LogSvr.Error($"ReadData ErrorCode: {result.ErrorCode} Message: {result.Message}");
                 }
-                return result;
+                return readResult;
             }
             else
             {
-                return OperateResult.CreateFailedResult(new OperateResult($"数据格式不正确 :MXPlcData {data.Address}"));
+                return OperateResult.CreateFailedResult<object>(new OperateResult($"数据格式不正确 :MXPlcData {data.Address}"));
             }
         }
 

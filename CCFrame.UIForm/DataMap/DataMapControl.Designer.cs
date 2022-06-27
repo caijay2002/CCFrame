@@ -75,7 +75,7 @@ namespace CCFrame.UIForm.DataMap
             // txt_Value
             // 
             this.txt_Value.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txt_Value.Location = new System.Drawing.Point(225, 14);
+            this.txt_Value.Location = new System.Drawing.Point(318, 14);
             this.txt_Value.Margin = new System.Windows.Forms.Padding(4);
             this.txt_Value.Name = "txt_Value";
             this.txt_Value.Size = new System.Drawing.Size(148, 23);
@@ -88,7 +88,7 @@ namespace CCFrame.UIForm.DataMap
             this.txt_Address.Location = new System.Drawing.Point(80, 14);
             this.txt_Address.Margin = new System.Windows.Forms.Padding(4);
             this.txt_Address.Name = "txt_Address";
-            this.txt_Address.Size = new System.Drawing.Size(116, 23);
+            this.txt_Address.Size = new System.Drawing.Size(208, 23);
             this.txt_Address.TabIndex = 19;
             // 
             // label1
@@ -139,6 +139,7 @@ namespace CCFrame.UIForm.DataMap
             this.dataMap_View.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataMap_View.Size = new System.Drawing.Size(818, 527);
             this.dataMap_View.TabIndex = 18;
+            this.dataMap_View.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataMap_View_CellClick);
             // 
             // Address
             // 
