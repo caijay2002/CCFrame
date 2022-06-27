@@ -50,14 +50,14 @@ namespace CCFrame.UIForm.DataMap
 
         private void dataMap_View_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dataMap_View.SelectedRows[0].DataBoundItem is Command.Data.IData selectedItem)
-            {
-                txt_Address.Text = selectedItem.Address;
-            }
-            else
-            {
-                //MessageBox.Show("请选择要修改的对象");
-            }
+            //if (dataMap_View.SelectedRows[0].DataBoundItem is Command.Data.IData selectedItem)
+            //{
+            //    txt_Address.Text = selectedItem.Address;
+            //}
+            //else
+            //{
+            //    //MessageBox.Show("请选择要修改的对象");
+            //}
         }
 
         private void btn_ChangeValue_Click(object sender, EventArgs e)

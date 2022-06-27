@@ -150,9 +150,9 @@ namespace CCFrame.Work
                         }
                     }
 
-                    //OpcUADriver.UpdateData();
+                    OpcUADriver.UpdateData();
 
-                    UpdateDatas();
+                    //UpdateDatas();
 
                     //UpdateAlarms();
 
@@ -160,7 +160,7 @@ namespace CCFrame.Work
                 }
                 catch (Exception ex)
                 {
-                    LogSvr.Error(string.Format("RunThread Error :{0}", ex.Message, ex.InnerException));
+                    LogSvr.Error(string.Format("RunThread Error :{0} InnerException {1}", ex.Message, ex.InnerException));
                 }
             }
         }

@@ -21,14 +21,14 @@ using System.Threading.Tasks;
 
 namespace CCFrame.Command
 {
-    public class CommandObjectHandlerBase
+    public abstract class CommandObjectHandlerBase
     {
-        private static bool isRun = false;
+        private bool isRun = false;
 
-        public static Task StartAsync(CommandObjectManager dm) =>
-    Task.Run(new CommandObjectHandlerBase(dm).RunCommandTask);
+        public Task StartAsync() =>
+            Task.Run(RunCommandTask);
 
-        public static void Stop()
+        public void Stop()
         {
             isRun = false;
         }
@@ -84,13 +84,10 @@ namespace CCFrame.Command
             if (Obj.Step == Obj.Commands.Count)//执行任务成功
             {
                 Obj.OverTime = DateTime.Now;
-                LogSvr.Error(" 任务成功结束：" + Obj.ToString());
+                LogSvr.Info(" 任务成功结束：" + Obj.ToString());
             }
         }
 
-        public virtual void RunCommand(CommandObject Obj)
-        {
-
-        }
+        public abstract void RunCommand(CommandObject Obj);
     }
 }

@@ -68,7 +68,7 @@ namespace CCFrame.Alarm
             }
             catch (Exception ex)
             {
-
+                Log.LogSvr.Error($"ReadAlarms Error {ex.Message}");
                 //throw;
             }
             

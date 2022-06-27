@@ -23,7 +23,7 @@ using Opc.Ua.Configuration;
 
 namespace CCFrame.Driver
 {
-    public delegate void MonitorDataChanged(string key, string value);
+    //public delegate void MonitorDataChanged(string key, string value);
 
     public class OpcUADriver
     {
@@ -299,7 +299,7 @@ namespace CCFrame.Driver
 
             if (m_session == null || m_session.Connected == false)
             {
-                Connect();
+                Connect().Wait();
             }
 
             if (m_session == null || m_session.Connected == false)
@@ -368,7 +368,7 @@ namespace CCFrame.Driver
 
             if (m_session == null || m_session.Connected == false)
             {
-                Connect();
+                Connect().Wait();
             }
 
             if (m_session == null || m_session.Connected == false)
@@ -559,8 +559,6 @@ namespace CCFrame.Driver
 
                 DataValue namespaceArray = m_session.ReadValue(Variables.Server_NamespaceArray);
                 Log.LogSvr.Info($"{m_IpAddress} StatusCode {namespaceArray.StatusCode}");
-
-
 
             }
             catch (Exception ex)
