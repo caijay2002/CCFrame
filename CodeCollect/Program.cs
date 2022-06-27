@@ -12,8 +12,11 @@ namespace CodeCollect
             ////VersionManage.WriteAttributeInfo()
             //VersionManage.DisplayTypeInfo(demo.GetType());
 
-            HttpClientDemo demo = new HttpClientDemo();
-            await demo.GetDataAdvancedAsync();
+            //HttpClientDemo demo = new HttpClientDemo();
+            //await demo.GetDataAdvancedAsync();
+
+            DataProtection.DataProtectionSample.Demo(@"D:\Learning\ProfessionalCSharp7-master\24Security\DataProtectionSample\bin\Debug\net5.0\test1");
+
 
             Console.ReadLine();
         }

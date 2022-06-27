@@ -35,15 +35,15 @@ namespace CodeCollect
     {
         private const string url = "http://www.cninnovation.com";
 
-        static async Task Main()
-        {
-            //SynchronizedAPI();
-            //AsynchronousPattern();
-            CallerWithAsync();
-            EventBasedAsyncPattern();
-            await TaskBasedAsyncPatternAsync();
-            Console.ReadLine();
-        }
+        //static async Task Main()
+        //{
+        //    //SynchronizedAPI();
+        //    //AsynchronousPattern();
+        //    CallerWithAsync();
+        //    EventBasedAsyncPattern();
+        //    await TaskBasedAsyncPatternAsync();
+        //    Console.ReadLine();
+        //}
 
         /// <summary>
         /// 调用异步方法
