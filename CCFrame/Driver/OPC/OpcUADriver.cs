@@ -429,6 +429,59 @@ namespace CCFrame.Driver
             }
         }
 
+        public OperateResult WriteValue(string nodeID, object value)
+        {
+            if(!IsConnected)
+            {
+                Connect().Wait();
+            }
+
+            if (!IsConnected) 
+                return OperateResult.CreateFailedResult(new OperateResult($"nodeID:{nodeID}m_session == null || m_session.Connected == false"));
+            try
+            {
+                WriteValueCollection nodesToWrite = new WriteValueCollection();
+
+                WriteValue intWriteVal = new WriteValue();
+                intWriteVal.NodeId = new NodeId(nodeID);
+                intWriteVal.AttributeId = Attributes.Value;
+                intWriteVal.Value = new DataValue();
+                intWriteVal.Value.Value = value;
+                nodesToWrite.Add(intWriteVal);
+
+                StatusCodeCollection results = null;
+                DiagnosticInfoCollection diagnosticInfos;
+
+                m_session.Write(null,
+                                nodesToWrite,
+                                out results,
+                                out diagnosticInfos);
+
+                m_validateResponse(results, nodesToWrite);
+
+                foreach (StatusCode writeResult in results)
+                {
+                    if (writeResult.Code != 0)
+                    {
+                        return OperateResult.CreateFailedResult(new OperateResult(
+                            (int)writeResult.Code,
+                            $"nodeID:{nodeID}m_session == null || m_session.Connected == false"
+                            ));
+                    }//写入失败
+                }
+                return OperateResult.CreateSuccessResult();
+            }
+            catch (Exception ex)
+            {
+                Log.LogSvr.Error($"Write Data Errorr : {ex.Message}");
+
+                //发生异常强制断开连接
+                Disconnect();
+
+                return OperateResult.CreateFailedResult(new OperateResult($" Write Data Error: {ex.Message}"));
+            }
+        }
+
         /// <summary>
         /// 读取数值
         /// </summary>
@@ -449,8 +502,6 @@ namespace CCFrame.Driver
 
             try
             {
-                //Log.LogSvr.Info($"ReadData  : {nodeID}");
-
                 DataValue dataValue = m_session.ReadValue(nodeID);
 
                 operateResult.IsSuccess = dataValue.StatusCode == 0;

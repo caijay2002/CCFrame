@@ -15,7 +15,7 @@ namespace CCFrame.UIForm.DataMap
 
     public partial class DataMapControl : UserControl
     {
-        public ClickHandler ClickHandler;
+        public event ClickHandler ClickHandler;
 
         public Size DataMapSize { get { return dataMap_View.Size; } set { dataMap_View.Size = value; } }
 
@@ -24,6 +24,8 @@ namespace CCFrame.UIForm.DataMap
         public DataMapControl()
         {
             InitializeComponent();
+            //默认读取DataMap
+            m_SourceKey = "DataMap";
         }
 
         public void SetSourceKey(string key)

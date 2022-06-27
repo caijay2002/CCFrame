@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 
 namespace CCFrame.Command
 {
-    class CommandObjectFactoryBase
+    public class CommandObjectFactoryBase
     {
 
         protected static Command CreatOPCCommand(string address, ReadOrWrite readOrWrite, CmdType cmdType, object value)
@@ -30,7 +30,7 @@ namespace CCFrame.Command
             var cmd = new Command();
             cmd.CmdType = cmdType;
             cmd.Data = new OPCData() { Address = address, DataType = DataType.String, Value = value };
-            cmd.ReadOrWrite = ReadOrWrite.Write;
+            cmd.ReadOrWrite = readOrWrite;
             return cmd;
         }
 
@@ -39,7 +39,7 @@ namespace CCFrame.Command
             var cmd = new Command();
             cmd.CmdType = cmdType;
             cmd.Data = new WebData() { Address = address, DataType = DataType.String, Value = value };
-            cmd.ReadOrWrite = ReadOrWrite.Write;
+            cmd.ReadOrWrite = readOrWrite;
             return cmd;
         }
 

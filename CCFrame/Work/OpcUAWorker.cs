@@ -84,6 +84,30 @@ namespace CCFrame.Work
             }
         }
 
+
+
+        public OperateResult WriteData(IData data)
+        {
+            if (data is OPCData opcdata)
+            {
+                var result = OpcUADriver.WriteValue(opcdata.Address,opcdata.Value);
+                if (result.IsSuccess)
+                {
+                    Core.DataCacheSvr.UpdateCache("DataMap", opcdata.Address, opcdata.Value);
+                }
+                else
+                {
+                    Log.LogSvr.Error($"ReadData ErrorCode: {result.ErrorCode} Message: {result.Message}");
+                }
+                //return result;
+                return OperateResult.CreateSuccessResult();
+            }
+            else
+            {
+                return OperateResult.CreateFailedResult(new OperateResult($"数据格式不正确 :MXPlcData {data.Address}"));
+            }
+        }
+
         public void Start()
         {
             Task t_Run = Task.Run(() =>
@@ -98,11 +122,6 @@ namespace CCFrame.Work
         }
 
 
-
-        public OperateResult WriteData(IData data)
-        {
-            return OperateResult.CreateSuccessResult();
-        }
 
 
         private async void Run()
