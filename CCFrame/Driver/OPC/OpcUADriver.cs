@@ -465,7 +465,7 @@ namespace CCFrame.Driver
                     {
                         return OperateResult.CreateFailedResult(new OperateResult(
                             (int)writeResult.Code,
-                            $"nodeID:{nodeID}m_session == null || m_session.Connected == false"
+                            $"nodeID:{nodeID}  writeResult:{writeResult}"
                             ));
                     }//写入失败
                 }
