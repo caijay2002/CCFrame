@@ -73,7 +73,7 @@ namespace CCFrame.Work
                 }
                 else
                 {
-                    Log.LogSvr.Error($"ReadData ErrorCode: {result.ErrorCode} Message: {result.Message}");
+                    LogSvr.Error($"ReadData ErrorCode: {result.ErrorCode} Message: {result.Message}");
                 }
                 //return result;
                 return result;
@@ -90,14 +90,31 @@ namespace CCFrame.Work
         {
             if (data is OPCData opcdata)
             {
-                var result = OpcUADriver.WriteValue(opcdata.Address,opcdata.Value);
+                //var result = OpcUADriver.WriteValue(opcdata.Address,opcdata.Value);
+                OperateResult result = OperateResult.CreateSuccessResult();
+
+                switch (opcdata.DataType)
+                {
+                    case DataType.Short:
+                        Int16.TryParse(data.Value.ToString(), out Int16 writeVlaue);
+                        result = OpcUADriver.WriteValue(data.Address, writeVlaue);
+                        break;
+                    case DataType.Int32:
+                        result = OpcUADriver.WriteValue(data.Address, data.Value);
+                        break;
+                    default:
+                        result = OpcUADriver.WriteValue(data.Address, data.Value.ToString());
+                        break;
+    
+                }
+
                 if (result.IsSuccess)
                 {
                     Core.DataCacheSvr.UpdateCache("DataMap", opcdata.Address, opcdata.Value);
                 }
                 else
                 {
-                    Log.LogSvr.Error($"ReadData ErrorCode: {result.ErrorCode} Message: {result.Message}");
+                    Log.LogSvr.Error($"WriteData ErrorCode: {result.ErrorCode} Message: {result.Message}");
                 }
                 //return result;
                 return OperateResult.CreateSuccessResult();

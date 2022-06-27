@@ -25,12 +25,12 @@ namespace CCFrame.Command
     public class CommandObjectFactoryBase
     {
 
-        protected static Command CreatOPCCommand(string address, ReadOrWrite readOrWrite, CmdType cmdType, object value,string stepName = "")
+        protected static Command CreatOPCCommand(string address, ReadOrWrite readOrWrite, CmdType cmdType, DataType dataType, object value,string stepName = "")
         {
             var cmd = new Command();
             cmd.StepName = stepName;
             cmd.CmdType = cmdType;
-            cmd.Data = new OPCData() { Address = address, DataType = DataType.String, Value = value};
+            cmd.Data = new OPCData() { Address = address, DataType = dataType, Value = value};
             cmd.ReadOrWrite = readOrWrite;
             return cmd;
         }

@@ -489,20 +489,32 @@ namespace CCFrame.Driver
         /// <returns></returns>
         public OperateResult<object> ReadData(string nodeID)
         {
+            if (!IsConnected)
+            {
+                Connect().Wait();
+                Log.LogSvr.Info($"{m_IpAddress} Connect  {nodeID}");
+            }
+
+            if (!IsConnected)
+            {
+                string errorMessage = string.Empty;
+                if (m_session == null) errorMessage = "m_session == null";
+                else errorMessage = "m_session.Connected == false";
+
+                return OperateResult.CreateFailedResult<object>(new OperateResult($"nodeID: {nodeID} | {errorMessage}"));
+            }
+
             OperateResult<object> operateResult = new OperateResult<object>();
 
             ReadValueIdCollection readNode = new ReadValueIdCollection();
 
             readNode.Add(new ReadValueId() { NodeId = nodeID, AttributeId = Attributes.Value });
 
-            if (!IsConnected)
-            {
-                return OperateResult.CreateFailedResult<object>(new OperateResult("nodeID:" + nodeID + "m_session == null || m_session.Connected == false"));
-            }
-
             try
             {
                 DataValue dataValue = m_session.ReadValue(nodeID);
+
+                Log.LogSvr.Info($"{m_IpAddress} nodeID - {nodeID} ReadValue - {dataValue.Value}");
 
                 operateResult.IsSuccess = dataValue.StatusCode == 0;
                 if (operateResult.IsSuccess) operateResult.Content = dataValue.Value;
