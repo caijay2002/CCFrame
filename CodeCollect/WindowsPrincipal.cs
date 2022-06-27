@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Security.Claims;
 using System.Security.Principal;
 
@@ -26,11 +29,11 @@ using System.Security.Principal;
 
 namespace CodeCollect
 {
-    internal class WindowsPrincipalHelper
+    internal class WindowsPrincipal
     {
 
         /// <summary>
-        /// 显示用户信息，身份类型，名称，身份验证类型，其他值
+        /// 显示用户信息
         /// </summary>
         /// <returns></returns>
         public static WindowsIdentity ShowIdentityInformation()
@@ -53,48 +56,6 @@ namespace CodeCollect
             Console.WriteLine($"Access Token: {identity.AccessToken.DangerousGetHandle()}");
             Console.WriteLine();
             return identity;
-        }
-
-        /// <summary>
-        /// Windows Principal 代码示例验证用户是否属于内置角色
-        /// </summary>
-        /// <param name="identity"></param>
-        /// <returns></returns>
-        public static WindowsPrincipal ShowPrincipal(WindowsIdentity identity)
-        {
-            Console.WriteLine("Show principal information");
-            WindowsPrincipal principal = new WindowsPrincipal(identity);
-            if (principal == null)
-            {
-                Console.WriteLine("not a Windows Principal");
-                return null;
-            }
-            Console.WriteLine($"Users? {principal.IsInRole(WindowsBuiltInRole.User)}");
-            Console.WriteLine($"Administrators? {principal.IsInRole(WindowsBuiltInRole.Administrator)}");
-            Console.WriteLine();
-            return principal;
-        }
-
-        /// <summary>
-        /// 使用声明
-        /// </summary>
-        /// <param name="claims"></param>
-        public static void ShowClaims(IEnumerable<Claim> claims)
-        {
-            Console.WriteLine("Claims");
-            foreach (var claim in claims)
-            {
-                Console.WriteLine($"Subject: {claim.Subject}");
-                Console.WriteLine($"Issuer: {claim.Issuer}");
-                Console.WriteLine($"Type: {claim.Type}");
-                Console.WriteLine($"Value type: {claim.ValueType}");
-                Console.WriteLine($"Value: {claim.Value}");
-                foreach (var prop in claim.Properties)
-                {
-                    Console.WriteLine($"\tProperty: {prop.Key} {prop.Value}");
-                }
-                Console.WriteLine();
-            }
         }
     }
 }

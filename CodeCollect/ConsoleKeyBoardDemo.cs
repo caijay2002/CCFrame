@@ -32,12 +32,12 @@ namespace CodeCollect
     internal class ConsoleKeyBoardDemo
     {
         //启用消息的产生者和使用者
-        //static void Main()
-        //{
-        //    Task t1 = Task.Run(() => Producer());
-        //    Task t2 = Task.Run(async () => await ConsumerAsync());
-        //    Task.WaitAll(t1, t2);
-        //}
+        static void Main()
+        {
+            Task t1 = Task.Run(() => Producer());
+            Task t2 = Task.Run(async () => await ConsumerAsync());
+            Task.WaitAll(t1, t2);
+        }
 
         private static BufferBlock<string> s_buffer = new BufferBlock<string>();
         //Producer方法从控制台读取字符串，Post方法写到BufferBlock中
