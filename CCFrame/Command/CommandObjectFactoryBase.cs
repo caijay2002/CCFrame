@@ -25,30 +25,30 @@ namespace CCFrame.Command
     public class CommandObjectFactoryBase
     {
 
-        protected static Command CreatOPCCommand(string address, ReadOrWrite readOrWrite, CmdType cmdType, DataType dataType, object value,string stepName = "")
+        protected static Command CreatOPCCommand(string address, ReadOrWrite readOrWrite, DataType dataType, object value,string stepName = "")
         {
             var cmd = new Command();
             cmd.StepName = stepName;
-            cmd.CmdType = cmdType;
+            cmd.CmdType = CmdType.OPCUA;
             cmd.Data = new OPCData() { Address = address, DataType = dataType, Value = value};
             cmd.ReadOrWrite = readOrWrite;
             return cmd;
         }
 
-        protected static Command CreatWEBCommand(string address, ReadOrWrite readOrWrite, CmdType cmdType, object value)
+        protected static Command CreatWEBCommand(string address, ReadOrWrite readOrWrite, object value)
         {
             var cmd = new Command();
-            cmd.CmdType = cmdType;
+            cmd.CmdType = CmdType.WEB;
             cmd.Data = new WebData() { Address = address, DataType = DataType.String, Value = value };
             cmd.ReadOrWrite = readOrWrite;
             return cmd;
         }
 
-        protected static Command CreatMXCommand(string address, DataType dataType, ReadOrWrite readOrWrite, CmdType cmdType, object value)
+        protected static Command CreatMXCommand(string address, DataType dataType, ReadOrWrite readOrWrite, object value)
         {
             var cmd = new Command();
             cmd.Data = new MXPlcData() { Address = address, DataType = dataType, Value = value };
-            cmd.CmdType = cmdType;
+            cmd.CmdType = CmdType.MXPLC;
             cmd.ReadOrWrite = ReadOrWrite.Write;
             return cmd;
         }
