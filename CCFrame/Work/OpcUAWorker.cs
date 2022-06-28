@@ -95,14 +95,15 @@ namespace CCFrame.Work
 
                 switch (opcdata.DataType)
                 {
-                    case DataType.Short:
-                        Int16.TryParse(data.Value.ToString(), out Int16 writeVlaue);
-                        result = OpcUADriver.WriteValue(data.Address, writeVlaue);
+                    case DataType.Int16:
+                        Int16.TryParse(data.Value.ToString(), out Int16 int16Value);
+                        result = OpcUADriver.WriteValue(data.Address, int16Value);
                         break;
                     case DataType.Int32:
-                        result = OpcUADriver.WriteValue(data.Address, data.Value);
+                        Int32.TryParse(data.Value.ToString(), out Int32 int32Value);
+                        result = OpcUADriver.WriteValue(data.Address, int32Value);
                         break;
-                    default:
+                    case DataType.String:
                         result = OpcUADriver.WriteValue(data.Address, data.Value.ToString());
                         break;
     
