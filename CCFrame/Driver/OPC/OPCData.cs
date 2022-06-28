@@ -27,6 +27,10 @@ namespace CCFrame.Driver
         /// </summary>
         public string Address { get; set; }
         /// <summary>
+        /// 标题（映射值）
+        /// </summary>
+        public string Title { get; set; }
+        /// <summary>
         /// 长度
         /// </summary>
         public int Length { get; set; }

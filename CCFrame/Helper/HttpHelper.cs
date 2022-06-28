@@ -23,15 +23,24 @@ namespace CCFrame.Helper
 {
     public class HttpHelper
     {
-        private static string UrlAddress { get; set; } = $"http://192.168.0.40:5031/";
+        private string UrlAddress { get; set; } = $"http://192.168.0.40:5021/";
 
-        public static OperateResult<string> PostClient(string postUrl)
+        public HttpHelper() { }
+
+        public HttpHelper(string httpAddress) { UrlAddress = httpAddress; }
+
+        /// <summary>
+        /// 同步获取数据
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public OperateResult<string> GetData(string url)
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    var r = client.PostAsync(postUrl, null).Result.Content.ReadAsStringAsync();
+                    var r = client.PostAsync(url, null).Result.Content.ReadAsStringAsync();
 
                     return OperateResult.CreateSuccessResult<string>(r.Result);
                 }
@@ -43,9 +52,6 @@ namespace CCFrame.Helper
             }
         }
 
-        private HttpClient _httpClient;
-        public HttpClient HttpClient => _httpClient ?? (_httpClient = new HttpClient());
-
         /// <summary>
         /// 异步获取数据
         /// </summary>
@@ -55,14 +61,17 @@ namespace CCFrame.Helper
         {
             var postUrl = UrlAddress + url;
 
-            HttpResponseMessage response = await HttpClient.GetAsync(postUrl);
-
-            if (response.IsSuccessStatusCode)
+            using (HttpClient client = new HttpClient())
             {
-                string responseBodyAsText = await response.Content.ReadAsStringAsync();//数据内容
-                return OperateResult.CreateSuccessResult<string>(responseBodyAsText);
-            }
-            return OperateResult.CreateFailedResult<string>(new OperateResult($"Response Status Code: {(int)response.StatusCode} {response.ReasonPhrase}"));
+                HttpResponseMessage response = await client.GetAsync(postUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBodyAsText = await response.Content.ReadAsStringAsync();//数据内容
+                    return OperateResult.CreateSuccessResult<string>(responseBodyAsText);
+                }
+                return OperateResult.CreateFailedResult<string>(new OperateResult($"Response Status Code: {(int)response.StatusCode} {response.ReasonPhrase}"));
+            } 
         }
 
         /// <summary>
@@ -76,15 +85,18 @@ namespace CCFrame.Helper
             var postUrl = UrlAddress + url;
             var request = new HttpRequestMessage(method, postUrl);
 
-            HttpResponseMessage response = await HttpClient.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
+            using (HttpClient client = new HttpClient())
             {
-                Console.WriteLine($"Response Status Code: {(int)response.StatusCode} {response.ReasonPhrase}");
-                string responseBodyAsText = await response.Content.ReadAsStringAsync();
-                return OperateResult.CreateSuccessResult<string>(responseBodyAsText);
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"Response Status Code: {(int)response.StatusCode} {response.ReasonPhrase}");
+                    string responseBodyAsText = await response.Content.ReadAsStringAsync();
+                    return OperateResult.CreateSuccessResult<string>(responseBodyAsText);
+                }
+                return OperateResult.CreateFailedResult<string>(new OperateResult($"Response Status Code: {(int)response.StatusCode} {response.ReasonPhrase}"));
             }
-            return OperateResult.CreateFailedResult<string>(new OperateResult($"Response Status Code: {(int)response.StatusCode} {response.ReasonPhrase}"));
         }
     }
 }

@@ -59,8 +59,7 @@ namespace CCFrame.Command.Data
         Double = 6,
         String = 7,
         DateTime = 8,
-        Short = 9,
-        
+        Short = 9,        
         Ascii = 11,
         Int16 = 20,
         Int32 = 21,

@@ -24,7 +24,7 @@ namespace CCFrame.Command
     public class CommandObjectManager
     {
         /// <summary>
-        /// 
+        /// 命令队列（线程安全的）
         /// </summary>
         private readonly ConcurrentQueue<CommandObject> _commandObjectQueue = new ConcurrentQueue<CommandObject>();
 
