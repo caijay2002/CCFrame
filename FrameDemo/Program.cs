@@ -1,5 +1,6 @@
 ﻿using System;
 using CCFrame;
+using CCFrame.Ethernet;
 
 namespace FrameDemo
 {
@@ -7,7 +8,10 @@ namespace FrameDemo
     {
         static void Main(string[] args)
         {
-            OperateResultDemo.CreatResult();
+            //OperateResultDemo.CreatResult();
+            SocketClient client = new SocketClient();
+            client.OnConnect();
+            client.OnSendCommand(new SocketData("HELLO"));
 
             Console.WriteLine("Hello World!");
         }

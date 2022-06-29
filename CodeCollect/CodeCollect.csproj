@@ -9,4 +9,12 @@
     <Folder Include="DataLib\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Security.Principal.Windows" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CCFrame\CCFrame.csproj" />
+  </ItemGroup>
+
 </Project>
