@@ -50,8 +50,6 @@ namespace CCFrame.Command
 
                     while (true)
                     {
-                        //for (int i = 0; i < cmd.Commands.Count; i++)
-                        //{
                         Console.WriteLine("Step:" + cmd.Step);
                         if (cmd.Step == cmd.Commands.Count || cmd.Step == -1)
                         {

@@ -27,9 +27,13 @@ namespace CCFrame.Driver
         /// </summary>
         public string Address { get; set; }
         /// <summary>
-        /// 标题（映射值）
+        /// 标题（站号）OP20A.S1
         /// </summary>
         public string Title { get; set; }
+        /// <summary>
+        /// 信号类型  例如：PC_Flag
+        /// </summary>
+        public string SignalType { get; set; }
         /// <summary>
         /// 长度
         /// </summary>

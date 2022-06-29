@@ -81,7 +81,7 @@ namespace CCFrame.UIForm.DataMap
                         CCFrame.Log.LogSvr.Error(selectedItem.Address + "输入的数据类型不正确");
                         return;
                     }
-                    selectedItem.Value = result;
+                    //selectedItem.Value = result;
                 }
 
                 DataCacheSvr.UpdateCache(m_SourceKey, selectedItem.Address, value);

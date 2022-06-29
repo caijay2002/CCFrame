@@ -73,7 +73,7 @@ namespace CCFrame.Core
         /// 更新缓存
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="data"></param>
+        /// <param name="data">需要新建的值</param>
         public static void UpdateCache(string key, IData data)
         {
             data.TimeStamp = DateTime.Now;
