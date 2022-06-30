@@ -10,6 +10,11 @@ namespace CCFrame.Helper
     /// </summary>
     public class DynamicFileHelper
     {
+        /// <summary>
+        /// 格式化文件行
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public IEnumerable<dynamic> ParseFile(string fileName)
         {
             var retList = new List<dynamic>();
@@ -44,6 +49,17 @@ namespace CCFrame.Helper
                 return new StreamReader(File.OpenRead(fileName));
             }
             return null;
+        }
+
+
+        /// <summary>
+        /// 打开指定文件夹
+        /// </summary>
+        /// <param name="filePath"></param>
+        public static void OpenFileDiagnostics(string filePath)
+        {
+            var psi = new System.Diagnostics.ProcessStartInfo() { FileName = filePath, UseShellExecute = true };
+            System.Diagnostics.Process.Start(psi);
         }
     }
 }
