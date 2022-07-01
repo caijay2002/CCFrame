@@ -18,7 +18,7 @@ using CCFrame.Command.Data;
 //----------------------------------------------------------------*/
 #endregion
 
-namespace CCFrame.DataConvert
+namespace CCFrame.Extensions
 {
     public static class ShortHelper
     {

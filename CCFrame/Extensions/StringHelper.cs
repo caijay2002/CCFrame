@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 //----------------------------------------------------------------*/
 #endregion
 
-namespace CCFrame.DataConvert
+namespace CCFrame.Extensions
 {
     public static class StringHelper
     {
