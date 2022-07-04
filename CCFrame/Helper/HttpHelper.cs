@@ -82,6 +82,7 @@ namespace CCFrame.Helper
         /// <returns></returns>
         public async Task<OperateResult<string>> GetDataAdvancedAsync(HttpMethod method, string url)
         {
+            //http://139.196.114.44:20500/DataCenter/Getall
             var postUrl = UrlAddress + url;
             var request = new HttpRequestMessage(method, postUrl);
 
