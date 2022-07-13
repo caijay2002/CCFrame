@@ -45,8 +45,8 @@ namespace CCFrame.Core
             if (DataMap.ContainsKey(key))
             {
                 var oldData = DataMap[key].FirstOrDefault(x => x.Address == address);
-                //if (oldData == null || oldData.Value?.Equals(value))
-                if (oldData.Value?.ToString() == value.ToString())
+                //if (oldData == null || oldData.Value?.Equals(value)) return;
+                if (oldData?.Value?.ToString() == value.ToString())
                 {
                     return;
                 }

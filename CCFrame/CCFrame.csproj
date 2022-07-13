@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <Folder Include="Alarm\" />
+    <Folder Include="Services\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
