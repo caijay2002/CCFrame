@@ -22,7 +22,7 @@ using CCFrame.Command.Data;
 namespace CCFrame.Core
 {
 
-    public delegate void DataChanged(string key, IData data);
+    public delegate void DataChanged(string key, IData data,object value);
 
     public static class DataCacheSvr
     {
@@ -45,15 +45,15 @@ namespace CCFrame.Core
             if (DataMap.ContainsKey(key))
             {
                 var oldData = DataMap[key].FirstOrDefault(x => x.Address == address);
-                //if (oldData == null || oldData.Value?.Equals(value)) return;
+                if (value == null) return;
                 if (oldData?.Value?.ToString() == value.ToString())
                 {
                     return;
                 }
-                var newData = oldData;
-                newData.Value = value;
+                //var newData = oldData;
+                //newData.Value = value;
 
-                if (DataChanged != null) DataChanged(key, newData);
+                if (DataChanged != null) DataChanged(key, oldData,value);
 
                 oldData.TimeStamp = DateTime.Now;
                 oldData.Value = value;
@@ -84,13 +84,13 @@ namespace CCFrame.Core
                 {
                     return;
                 }
-                if (DataChanged != null) DataChanged(key, data);
+                if (DataChanged != null) DataChanged(key, data,data.Value);
 
                 oldData = data;
             }
             else
             {
-                if (DataChanged != null) DataChanged(key, data);
+                if (DataChanged != null) DataChanged(key, data,data.Value);
 
                 DataMap.TryAdd(key, new List<IData>() { data });
             }
@@ -109,7 +109,7 @@ namespace CCFrame.Core
         /// <param name="key"></param>
         /// <param name="address"></param>
         /// <returns></returns>
-        public static object GetValue(string key, string address) => DataMap[key]?.FirstOrDefault(x => x.Address == address)?.Value ?? null;
+        public static object GetValue(string key, string address) => DataMap[key]?.FirstOrDefault(x => x.Address == address)?.Value ?? 0;
 
         /// <summary>
         /// 获取数据

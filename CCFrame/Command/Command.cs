@@ -82,5 +82,9 @@ namespace CCFrame.Command
         /// WEB API
         /// </summary>
         WEB = 6,
+        /// <summary>
+        /// 其他命令
+        /// </summary>
+        OTHER = 99,
     }
 }

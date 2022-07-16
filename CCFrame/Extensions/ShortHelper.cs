@@ -62,6 +62,8 @@ namespace CCFrame.Extensions
                 if (buffer.Length != 2) return 0;
                 var val = Convert.ToInt32(buffer[0]) |
                 (Convert.ToInt32(buffer[1]) << 16);
+
+                if (buffer[0] < 0) val += 65536;
                 return val;
             }
             catch (Exception)
