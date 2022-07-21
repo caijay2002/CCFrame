@@ -38,5 +38,16 @@ namespace CCFrame.Extensions
                 return 0;
             }
         }
+
+        /// <summary>
+        /// yyMMddHHmmss
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="stringFormat"></param>
+        /// <returns></returns>
+        public static DateTime StringToDate(string str,string stringFormat = "yyMMddHHmmss")
+        {
+            return DateTime.ParseExact(str, stringFormat, System.Globalization.CultureInfo.CurrentCulture);
+        }
     }
 }
