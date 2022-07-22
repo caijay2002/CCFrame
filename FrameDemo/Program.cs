@@ -1,6 +1,6 @@
 ﻿using System;
 using CCFrame;
-using CCFrame.Ethernet;
+using CCFrame.Extensions;
 
 namespace FrameDemo
 {
@@ -8,12 +8,20 @@ namespace FrameDemo
     {
         static void Main(string[] args)
         {
-            //OperateResultDemo.CreatResult();
-            SocketClient client = new SocketClient();
-            client.OnConnect();
-            client.OnSendCommand(new SocketData("HELLO"));
+            float f = 123.12f;
+            var bytes = BitConverter.GetBytes(f);
+            ByteArrayHelper.ConsoleDataValueInfo(bytes);
+        }
 
-            Console.WriteLine("Hello World!");
+        public static int BitToInt16Converter(byte[] bytes)
+        {
+            string str = "";
+            foreach (byte b in bytes)
+            {
+                str += b.ToString("X2");
+            }
+            int temp = Convert.ToUInt16(str, 16);
+            return temp;
         }
     }
 }
