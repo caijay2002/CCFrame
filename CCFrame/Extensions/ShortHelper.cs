@@ -72,6 +72,60 @@ namespace CCFrame.Extensions
             }
         }
 
+        public static int ToShort(ushort[] buffer)
+        {
+            try
+            {
+                if (buffer.Length != 1) return 0;
+                return buffer[0];
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+        public static float ToFloat(ushort[] buffer)
+        {
+            try
+            {
+                if (buffer.Length != 2) return 0;
+                byte[] bytes = new byte[4];
+                bytes[0] = (byte)(buffer[1] & 0xFF);
+                bytes[1] = (byte)(buffer[1] >> 8);
+                bytes[2] = (byte)(buffer[0] & 0xFF);
+                bytes[3] = (byte)(buffer[0] >> 8);
+                return BitConverter.ToSingle(bytes, 0);
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        public static double ToDouble(ushort[] buffer)
+        {
+            try
+            {
+                if (buffer.Length != 4) return -1;
+                byte[] bytes = new byte[8];
+                bytes[0] = (byte)(buffer[3] & 0xFF);
+                bytes[1] = (byte)(buffer[3] >> 8);
+                bytes[2] = (byte)(buffer[2] & 0xFF);
+                bytes[3] = (byte)(buffer[2] >> 8);
+                bytes[4] = (byte)(buffer[1] & 0xFF);
+                bytes[5] = (byte)(buffer[1] >> 8);
+                bytes[6] = (byte)(buffer[0] & 0xFF);
+                bytes[7] = (byte)(buffer[0] >> 8);
+                double result = BitConverter.ToDouble(bytes, 0);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
         public static string ToAscii(short[] buffer)
         {
             List<byte> cmdBytes = new List<byte>();
