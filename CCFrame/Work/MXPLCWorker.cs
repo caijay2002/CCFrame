@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CCFrame.Command.Data;
 using CCFrame.Extensions;
+using System.Diagnostics;
 
 #region << PLC工作者 >>
 /*----------------------------------------------------------------
@@ -121,9 +122,12 @@ namespace CCFrame.Work
                         }
                     }
 
+                    Stopwatch stopwatch = Stopwatch.StartNew();//性能监控
                     UpdateDatas();
 
                     UpdateAlarms();
+
+                    LogSvr.Debug($"UpdateDatas 耗时：{stopwatch.ElapsedMilliseconds} ms");
 
                     await Task.Delay(1000);
                 }
