@@ -70,7 +70,7 @@ namespace CCFrame.UIForm.DataMap
 
                 string value = txt_Value.Text;
 
-                selectedItem.Value = Value;
+                //selectedItem.Value = value;
 
                 if (selectedItem.DataType == Command.Data.DataType.Int32 || selectedItem.DataType == Command.Data.DataType.Short)
                 {
