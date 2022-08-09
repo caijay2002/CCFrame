@@ -187,13 +187,13 @@ namespace CCFrame.Work
             {
                 if (item is MXPlcData data)
                 {
-                    short[] buffer = new short[data.Length];
+                    //short[] buffer = new short[data.Length];
 
-                    var result = MXDriver.ReadData(data);
+                    var result = MXDriver.ReadData(data);                    
 
-                    item.Value = ShortHelper.ToInt(buffer);
+                    Core.DataCacheSvr.UpdateCache("AlarmMap", item.Address, ShortHelper.ToShort(result.Content));
 
-                    //Core.DataCacheSvr.UpdateCache("AlarmMap", item);
+                    //item.Value = ShortHelper.ToShort(result.Content);
                 }
             }
         }

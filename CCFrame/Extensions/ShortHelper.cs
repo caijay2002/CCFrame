@@ -126,6 +126,20 @@ namespace CCFrame.Extensions
             }
         }
 
+        public static short ToShort(short[] buffer)
+        {
+            try
+            {
+                if (buffer.Length != 1) return 0;
+                var val = Convert.ToInt16(buffer[0]);
+                return val;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
         public static string ToAscii(short[] buffer)
         {
             List<byte> cmdBytes = new List<byte>();
