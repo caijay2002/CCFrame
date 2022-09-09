@@ -52,6 +52,8 @@ namespace CCFrame.Core
                 }
                 //var newData = oldData;
                 //newData.Value = value;
+                //oldData.TimeStamp = DateTime.Now;
+                //oldData.Value = value;
 
                 if (DataChanged != null) DataChanged(key, oldData,value);
 

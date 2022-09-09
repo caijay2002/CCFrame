@@ -21,11 +21,13 @@ namespace CCFrame.UIForm.DataMap
 
         private string m_SourceKey { get; set; }
 
+        BindingList<Command.Data.IData> datas = new BindingList<Command.Data.IData>();
+
         public DataMapControl()
         {
             InitializeComponent();
             //默认读取DataMap
-            m_SourceKey = "DataMap";
+            m_SourceKey = "DataMap";            
         }
 
         public void SetSourceKey(string key)
@@ -35,7 +37,9 @@ namespace CCFrame.UIForm.DataMap
 
         public async void ReflashData()
         {
-            dataMap_View.DataSource = await GetData();
+            var readData = await GetData();
+            datas = new BindingList<Command.Data.IData>(readData);
+            dataMap_View.DataSource = datas;
         }
 
         /// <summary>

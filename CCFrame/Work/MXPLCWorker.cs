@@ -122,12 +122,12 @@ namespace CCFrame.Work
                         }
                     }
 
-                    Stopwatch stopwatch = Stopwatch.StartNew();//性能监控
+                    //Stopwatch stopwatch = Stopwatch.StartNew();//性能监控
                     UpdateDatas();
 
                     UpdateAlarms();
 
-                    LogSvr.Debug($"UpdateDatas 耗时：{stopwatch.ElapsedMilliseconds} ms");
+                    //LogSvr.Debug($"UpdateDatas 耗时：{stopwatch.ElapsedMilliseconds} ms");
 
                     await Task.Delay(1000);
                 }
@@ -169,12 +169,25 @@ namespace CCFrame.Work
                     return ShortHelper.ToAscii(buffer);
                 case DataType.Bit:
                     return ShortHelper.ToBool(buffer);
+                case DataType.Int16:
+                    return buffer[0];
                 case DataType.Int32:
                     return ShortHelper.ToInt(buffer);
+                case DataType.Int64:
+                    return ShortHelper.Tolong(buffer);
+                case DataType.Float:
+                    return ShortHelper.ToFloat(buffer);
                 case DataType.Short:
                     return buffer[0];
                 case DataType.DateTime:
-                    return null;
+                    if (buffer.Length < 5) return null;//长度至少大于5
+                    string year = buffer[0].ToString();
+                    string month = buffer[1].ToString();
+                    string day = buffer[2].ToString();
+                    string hour = buffer[3].ToString();
+                    string minute = buffer[4].ToString();
+                    var result = year + "-" + month + "-" + day + " " + hour + ":" + minute;
+                    return result;
                 default:
                     return null;
             }
@@ -187,7 +200,7 @@ namespace CCFrame.Work
             {
                 if (item is MXPlcData data)
                 {
-                    //short[] buffer = new short[data.Length];
+                    short[] buffer = new short[data.Length];
 
                     var result = MXDriver.ReadData(data);                    
 

@@ -24,7 +24,6 @@ namespace CCFrame.Command
 {
     public class CommandObjectFactoryBase
     {
-
         protected static Command CreatOPCCommand(string address, ReadOrWrite readOrWrite, DataType dataType, object value,string stepName = "")
         {
             var cmd = new Command();
@@ -50,6 +49,15 @@ namespace CCFrame.Command
             cmd.Data = new MXPlcData() { Address = address, DataType = dataType, Value = value };
             cmd.CmdType = CmdType.MXPLC;
             cmd.ReadOrWrite = ReadOrWrite.Write;
+            return cmd;
+        }
+
+        protected static Command CreatOtherCommand(string stepname, ReadOrWrite readOrWrite)
+        {
+            var cmd = new Command();
+            cmd.CmdType = CmdType.OTHER;//其他指令
+            cmd.StepName = stepname;            
+            cmd.ReadOrWrite = readOrWrite;
             return cmd;
         }
     }

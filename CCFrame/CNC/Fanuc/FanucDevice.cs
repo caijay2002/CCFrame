@@ -1,5 +1,7 @@
-﻿using System;
+﻿using CCFrame.Log;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,6 +60,8 @@ namespace CCFrame.CNC
             if (fanucAPI == null) return OperateResult.CreateFailedResult(new OperateResult("设备未实例化"));
             if (!Connect().IsSuccess) return OperateResult.CreateFailedResult(new OperateResult("连接失败"));
 
+
+            Stopwatch stopwatch = Stopwatch.StartNew();//性能监控 
             #region 读取机床相关数据 并更新数据缓存
             var FeedOverride = fanucAPI.GetDeviceFeedOverride().Then((result) =>
             {
@@ -110,7 +114,7 @@ namespace CCFrame.CNC
             });
             #endregion
             //读取数据不成功打印日志
-            if (!FeedOverride.IsSuccess) CCFrame.Log.LogSvr.Error(" Read FeedOverride: " + FeedOverride.ToErrorMessage());
+            if (!FeedOverride.IsSuccess) LogSvr.Error(" Read FeedOverride: " + FeedOverride.ToErrorMessage());
             //UpdateValue("FeedOverride", FeedOverride.Content);
             //UpdateValue("SpindleOverride", SpindleOverride.Content);
             //UpdateValue("G54X", G54X.Content);
@@ -122,6 +126,8 @@ namespace CCFrame.CNC
             //UpdateValue("MainToolNo", MainToolNo.Content);
             //UpdateValue("ToolLife", ToolLife.Content1);
             //UpdateValue("ToolCount", ToolLife.Content2);
+
+            LogSvr.Debug($"UpdateDatas 耗时：{stopwatch.ElapsedMilliseconds} ms");
 
             Disconnect();
 

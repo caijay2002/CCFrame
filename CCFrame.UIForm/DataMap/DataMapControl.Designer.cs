@@ -147,7 +147,7 @@ namespace CCFrame.UIForm.DataMap
             this.Address.HeaderText = "地址";
             this.Address.Name = "Address";
             this.Address.ReadOnly = true;
-            this.Address.Width = 200;
+            this.Address.Width = 150;
             // 
             // Length
             // 
@@ -164,6 +164,7 @@ namespace CCFrame.UIForm.DataMap
             this.Value.HeaderText = "数值";
             this.Value.Name = "Value";
             this.Value.ReadOnly = true;
+            this.Value.Width = 200;
             // 
             // DataType
             // 
@@ -179,6 +180,7 @@ namespace CCFrame.UIForm.DataMap
             this.TimeStamp.HeaderText = "刷新时间";
             this.TimeStamp.Name = "TimeStamp";
             this.TimeStamp.ReadOnly = true;
+            this.TimeStamp.Width = 180;
             // 
             // PLCDataType
             // 

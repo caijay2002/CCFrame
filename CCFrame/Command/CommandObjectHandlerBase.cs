@@ -23,7 +23,7 @@ namespace CCFrame.Command
 {
     public abstract class CommandObjectHandlerBase
     {
-        private bool isRun = false;
+        protected bool isRun = false;
 
         public Task StartAsync() =>
             Task.Run(RunCommandTask);
@@ -36,7 +36,7 @@ namespace CCFrame.Command
         protected CommandObjectHandlerBase(CommandObjectManager dm) =>
             _commandObjectManager = dm ?? throw new ArgumentNullException(nameof(dm));
 
-        private CommandObjectManager _commandObjectManager;
+        public CommandObjectManager _commandObjectManager;
 
         protected async Task RunCommandTask()
         {

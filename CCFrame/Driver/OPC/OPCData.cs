@@ -23,7 +23,7 @@ namespace CCFrame.Driver
     public class OPCData : IData
     {
         /// <summary>
-        /// 地址
+        /// 地址n=
         /// </summary>
         public string Address { get; set; }
         /// <summary>

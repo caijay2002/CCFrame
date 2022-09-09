@@ -63,7 +63,24 @@ namespace CCFrame.Extensions
                 var val = Convert.ToInt32(buffer[0]) |
                 (Convert.ToInt32(buffer[1]) << 16);
 
-                if (buffer[0] < 0) val += 65536;
+                if (buffer[0] < 0 && buffer[1] ==0) val += 65536;
+                return val;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+        public static long Tolong(short[] buffer)
+        {
+            try
+            {
+                if (buffer.Length != 4) return 0;
+                var val = Convert.ToInt64(buffer[0]) |
+                    (Convert.ToInt64(buffer[1]) << 16) |
+                    (Convert.ToInt64(buffer[2]) << 32) |
+                    (Convert.ToInt64(buffer[3]) << 48);
                 return val;
             }
             catch (Exception)
@@ -85,7 +102,7 @@ namespace CCFrame.Extensions
             }
         }
 
-        public static float ToFloat(ushort[] buffer)
+        public static float ToFloat(short[] buffer)
         {
             try
             {
@@ -178,6 +195,7 @@ namespace CCFrame.Extensions
                     buffer = new short[] {(short)((int)data.Value&0xFFFF), (short)((int)data.Value >> 16) };
                     break;
                 case DataType.Short:
+                case DataType.Int16:
                     buffer = new short[1] { (short)Convert.ToUInt16(data.Value) };
                     break;
                 //case DataType.Double:
